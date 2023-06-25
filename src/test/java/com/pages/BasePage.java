@@ -65,6 +65,10 @@ public class BasePage {
         return element.getText().trim();
     }
 
+
+    // method waits for the web element specified by the locator to become visible,
+    // retrieves its visible text content, and returns it as a String.
+    // If a StaleElementReferenceException occurs, the method re-locates the element and retrieves the updated text content
     public String getText(By element) {
         try {
             WebElement webElement = waitForVisibilityOfElement(element);
@@ -75,7 +79,7 @@ public class BasePage {
         }
     }
 
-    //    protected : To access the meth
+
     protected void getURL(String url) {
         try {
             driver.manage().window().maximize();
@@ -131,6 +135,9 @@ public class BasePage {
     }
 
 
+    // method waits for an element specified by the locator to become visible.
+    // Once the element becomes visible, the reference to the located element is returned.
+    // If a StaleElementReferenceException occurs, the method recursively calls itself to re-locate the element
     public WebElement waitForVisibilityOfElement(By loc) {
         try {
             webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
@@ -140,10 +147,13 @@ public class BasePage {
             webElement = waitForVisibilityOfElement(loc);
             return webElement;
         } catch (Exception e) {
+            // Re-throw the exception for further handling or logging in other methods
             throw e;
         }
     }
 
+  // method waits for multiple elements specified by the locator to become visible.
+  // Once all the elements become visible, the references to the located elements are returned as a list
     public List<WebElement> waitForVisibilityOfElements(By loc) {
         try {
             List<WebElement> elements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(loc));
@@ -155,6 +165,7 @@ public class BasePage {
     }
 
 
+    // waits for an element specified by the locator to become visible within the given timeout period
     public WebElement waitForVisibilityOfElement(By loc, long timeoutInSec) {
         WebElement element;
         try {
@@ -170,7 +181,7 @@ public class BasePage {
         }
     }
 
-    // Check for something no longer exist - previously visible
+    // waits for an element specified by the locator to become invisible within the given timeout period
     public void waitForInVisibilityOfElement(By loc, long timeoutInSec) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
@@ -242,7 +253,8 @@ public class BasePage {
             waitFor(1);
             dirContents = dir.listFiles();
             if (dirContents.length >= 1) {
-//               crdownload : when file is downloading we have this extension
+                // crdownload : when file is downloading we have this extension
+                // tmp : temporary file extension (when file is downloading)
                 isDownloading = Arrays.stream(dirContents).anyMatch(i -> (i.getName().contains(".crdownload") || i.getName().contains(".tmp")));
                 log.info("file is downloading .." + dirContents[0]);
             }
@@ -267,8 +279,8 @@ public class BasePage {
         try {
             waitForVisibilityOfElement(locator).click();
         }
-//        ElementClickInterceptedException : if the element is hidden and we try to click we get this exception
-//        StaleElementReferenceException : when the element disappears while performing action
+//        ElementClickInterceptedException : WebDriver is unable to perform the click if the element is blocked (some other element is intercepting it) and we try to click we get this exception
+//        StaleElementReferenceException : WebDriver tries to interact with an element that has become invalid or no longer exists in the current state of the webpage
         catch (ElementClickInterceptedException | StaleElementReferenceException e) {
             clickUsingJS(locator);
         }
