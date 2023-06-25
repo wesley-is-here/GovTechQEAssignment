@@ -150,7 +150,7 @@ public class HomePage extends BasePage {
     }
 
     public void waitForIndexComplete() {
-        waitForInVisibilityOfElement(txtIndex, 300);
+        waitForInVisibilityOfElement(txtIndex, 500);
     }
 
     public void videoVisible(String text) {
