@@ -1,0 +1,338 @@
+package com.pages;
+
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.steps._Hooks;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+
+public class HomePage extends BasePage {
+
+    protected WebDriver driver;
+    protected WebDriverWait wait;
+    Logger logger = LoggerFactory.getLogger(_Hooks.class);
+
+
+    public HomePage(WebDriver driver, WebDriverWait wait) {
+        // super: It is a keyword used to access or invoke members (methods or variables) of the parent class
+        super(driver, wait);
+        // this: It is a keyword that refers to the current instance of a class.
+        this.driver = driver;
+        this.wait = wait;
+    }
+
+    // This is for this assignment (private - limit access to this class only)
+    private By PMA = By.cssSelector("#viLoginOutlook > span");
+    private By mSoftEmail = By.xpath("//input[@type='email']");
+    private By mSoftPassword = By.xpath("//input[@type='password']");
+    private By mSoftNextButton = By.xpath("//input[@type='submit']");
+    private By mSoftSignInButton = By.xpath("//input[@type='submit']");
+    private By yesButton = By.xpath("//input[@type='submit']");
+    private By uploadButton = By.cssSelector("#galleryUploadtabs");
+    private By fileUpload = By.xpath("//input[@type='file']");
+    private By checkBox = By.cssSelector("span.checkbox-text");
+    private By btnUploadIndex = By.xpath("//span[text()='Upload + index']");
+    private By uploadText = By.xpath("//span[text()='1 file uploaded']");
+    private By closeButton = By.cssSelector("#close > span");
+    private By txtIndex = By.xpath("//span[normalize-space()='Indexing...']");
+    private By btnDownloadInsights = By.cssSelector("#download-insights > i.i-vi-download.ng-star-inserted");
+
+    private By btnDownloadPopUp = By.cssSelector("#download > span");
+    private By btnCancelPopUp = By.cssSelector("#cancel > span");
+
+    private By tabTimeline = By.xpath("//button[@title='Timeline']");
+
+    private By fullTranscribedText = By.id("appViInsightsTimeline");
+    private By dropDownPrivacy = By.xpath("(//*[@id='indexingPrivacy']/p-dropdown//span/i)[1]");
+    private By dropDownIndexLanguage = By.xpath("(//*[@id='indexingLanguage']/p-dropdown//span/i)[1]");
+    private By searchBox = By.id("viFilterSearchInput");
+
+    private By searchIcon = By.xpath("//i[@title='Search']");
+
+    private By searchFilter = By.xpath("//button[@title='Filters']");
+
+    private By searchInDropDownArrow = By.xpath("//*[@id='scope-filter-id']//i[@role='presentation']");
+
+    private By insightTypeDropDownArrow = By.xpath("//*[@title='Insight type']//i[@role='presentation']");
+
+    private By txtPresenceIndex = By.xpath("//*[contains(text(),'Indexed')]");
+
+    private By viewDropDown = By.xpath("//*[@id='gallery-view-menu']/p-dropdown//i[@role='presentation']");
+
+    private By listView = By.id("list-view");
+
+    private By tiledView = By.id("grid-view");
+
+
+    public void launchURL(String url) {
+        getURL(url);
+    }
+
+    public void clickPMA() {
+        click(PMA);
+    }
+
+    public void enterMsoftEmail(String email) {
+        setText(mSoftEmail, email);
+    }
+
+    public void enterMsoftPassword(String password) {
+        setText(mSoftPassword, password);
+    }
+
+    public void nextMsoftButton() {
+        click(mSoftNextButton);
+    }
+
+    public void signInMsoftButton() {
+        click(mSoftSignInButton);
+    }
+
+    public void yesButtonConfirm() {
+        click(yesButton);
+    }
+
+    public void uploadButtonClick() {
+        waitForPageToLoad();
+        waitFor(5);
+        click(uploadButton);
+    }
+
+
+    public void uploadFile(String filename) {
+        String file = System.getProperty("user.dir") + File.separator + "resources" + File.separator + "VideoUpload" + File.separator + filename;
+        waitForPresenceOfElement(fileUpload).sendKeys(file);
+        waitFor(1);
+    }
+
+    public void selectTermsAndConditions() {
+        waitForVisibilityOfElement(checkBox);
+        String js = "document.querySelector('span.checkbox-text',':before').click()";
+        executeScript(js);
+        waitFor(1);
+    }
+
+    public void clickOnUploadIndexButton() {
+        click(btnUploadIndex);
+        waitFor(2);
+    }
+
+    public void selectVideoDropDownPrivacy(String value) {
+        click(dropDownPrivacy);
+        By val = By.xpath("//span[normalize-space()='" + value + "']");
+        click(val);
+        waitFor(1);
+    }
+
+    public void selectVideoDropDownVSL(String value) {
+        click(dropDownIndexLanguage);
+        By val = By.xpath("//span[normalize-space()='" + value + "']");
+        click(val);
+        waitFor(1);
+    }
+
+    public void waitForFileToUpload() {
+        // wait for text with 150 seconds time limit
+        waitForVisibilityOfElement(uploadText, 150);
+    }
+
+    public void closeButton() {
+        click(closeButton);
+    }
+
+    public void waitForIndexComplete() {
+        waitForInVisibilityOfElement(txtIndex, 300);
+    }
+
+    public void videoVisible(String text) {
+        By videoName = By.xpath("//span[normalize-space()='" + text + "' and @title='" + text + "']");
+        String name = getText(videoName);
+        Assert.assertEquals(text, name.trim());
+    }
+
+    public void videoClick(String text) throws IOException {
+        By videoName = By.xpath("//span[normalize-space()='" + text + "' and @title='" + text + "']");
+        click(videoName);
+        waitForPageToLoad();
+        clearDownloadDirectory();
+        waitFor(10);
+    }
+
+    public void videoPlayerVisible() {
+        By videoPlayer = By.xpath("//video");
+        waitForVisibilityOfElement(videoPlayer, 15);
+        logger.info("Video Player is visible.");
+    }
+
+
+    public void checkVideoPlaying() {
+        By videoElement = By.xpath("//video");
+        Boolean isPlaying = isVideoPlaying(videoElement);
+
+        if (isPlaying) {
+            // Video is still playing
+            logger.info("The video is playing.");
+        } else {
+            // Video is paused or not playing
+            logger.info("The video is paused or not playing.");
+
+            // Perform playback action (e.g., click the play button)
+            // (Click once to repeat - allowing playback of the current selected video)
+            By playButton = By.xpath("//*[@title='Play']");
+            click(playButton);
+            isPlaying = isVideoPlaying(videoElement);
+
+
+            // Continuously check if the video starts playing
+            while (!isPlaying) {
+                waitFor(1); // Wait for 1 second
+                // Verify that the video is now playing
+                isPlaying = isVideoPlaying(videoElement);
+                waitFor(1);
+            }
+
+            logger.info("The video playback has started.");
+        }
+    }
+
+    public void clickDownloadInsights() {
+        click(btnDownloadInsights);
+        waitFor(1);
+    }
+
+    public void clickDownloadCompletedInsights(String insight) {
+        By insightDownload = By.xpath("//*[@id='submenu-download-insights']/li[@title='" + insight + "']");
+        click(insightDownload);
+        waitForFileToDownload();
+    }
+
+
+    public void seeSegment(String text) {
+        By segment = By.xpath("//*[contains(@title,'" + text + "')]");
+        waitForVisibilityOfElement(segment);
+    }
+
+    public void selectVideoTimelineSlider(String type, int num) {
+        switch (type) {
+            case "Audio":
+                By insightsBar = By.cssSelector("#acousticEventsComponent > div.row.timeline.ng-star-inserted > div > app-vi-insights-horizontal-timeline > div.horizontal-timeline > svg > rect.transition.bar");
+                moveSliderToPosition(insightsBar, num);
+                // Code to execute when variable is 1
+                break;
+            case "Keywords":
+                insightsBar = By.cssSelector("#keywordsComponent > div.row.timeline.ng-star-inserted > div > app-vi-insights-horizontal-timeline > div.horizontal-timeline > svg > rect.transition.bar");
+                moveSliderToPosition(insightsBar, num);
+                break;
+            case "Labels":
+                insightsBar = By.cssSelector("#labelsComponent > div.row.timeline.ng-star-inserted > div > app-vi-insights-horizontal-timeline > div.horizontal-timeline > svg > rect.transition.bar");
+                moveSliderToPosition(insightsBar, num);
+                break;
+            case "Entities":
+                insightsBar = By.cssSelector("#mentionedEntitiesComponent > div.row.timeline.ng-star-inserted > div > app-vi-insights-horizontal-timeline > div.horizontal-timeline > svg > rect.transition.bar");
+                moveSliderToPosition(insightsBar, num);
+                break;
+            default:
+                throw new RuntimeException("insight" + type + "not found.");
+        }
+        waitFor(2);
+    }
+
+    public void clickDownloadBtn() {
+        click(btnDownloadPopUp);
+        waitForFileToDownload();
+    }
+
+    public void clickCancelBtn() {
+        click(btnCancelPopUp);
+        waitFor(1);
+    }
+
+
+    public void clickTimeline() {
+        click(tabTimeline);
+        waitFor(1);
+    }
+
+    public void transcribedText() {
+        String transcribedText = getText(fullTranscribedText);
+        waitFor(1);
+        logger.info(transcribedText);
+        waitFor(1);
+    }
+
+    public void enterTextSearchBox(String text) {
+        setText(searchBox, text);
+        waitFor(1);
+    }
+
+    public void clickSearch() {
+        click(searchIcon);
+        waitFor(5);
+    }
+
+    public void clickFilter() {
+        click(searchFilter);
+    }
+
+    public void searchInDropdown(String text) {
+        click(searchInDropDownArrow);
+        waitFor(1);
+        By val = By.xpath("//span[normalize-space()='" + text + "']");
+        click(val);
+        waitFor(1);
+    }
+
+    public void insightTypeDropdown(String text) {
+        click(insightTypeDropDownArrow);
+        waitFor(1);
+        By val = By.xpath("//span[normalize-space()='" + text + "']");
+        click(val);
+        waitFor(1);
+    }
+
+    public void checkIndexes() {
+        List<WebElement> elements = waitForVisibilityOfElements(txtPresenceIndex);
+        logger.info("There are " + elements.size() + " indexed videos.");
+    }
+
+    public void hoverVideoTiles() {
+        List<WebElement> elements = waitForVisibilityOfElements(txtPresenceIndex);
+        for (WebElement ele : elements) {
+            mouseHover(ele);
+            waitFor(2);
+        }
+
+    }
+
+    public void viewDropDown() {
+        click(viewDropDown);
+        waitFor(1);
+    }
+
+    public void selectLstView() {
+        click(listView);
+        waitFor(2);
+    }
+
+    public void selectTledView() {
+        click(tiledView);
+        waitFor(2);
+    }
+
+
+    public void switchesTab(String Tab) {
+        logger.info("Switch Tab");
+        switchToNewWindow(Tab);
+    }
+
+
+}
