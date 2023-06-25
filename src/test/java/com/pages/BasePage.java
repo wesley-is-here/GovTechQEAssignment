@@ -158,7 +158,7 @@ public class BasePage {
     public WebElement waitForVisibilityOfElement(By loc, long timeoutInSec) {
         WebElement element;
         try {
-            WebDriverWait wait = new WebDriverWait(driver, timeoutInSec, 0);
+            WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
             highlight(element);
             return element;
@@ -173,7 +173,7 @@ public class BasePage {
     // Check for something no longer exist - previously visible
     public void waitForInVisibilityOfElement(By loc, long timeoutInSec) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, timeoutInSec, 0);
+            WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             boolean isInvisible = wait.until(ExpectedConditions.invisibilityOf(findElement(loc)));
             Assert.assertEquals(isInvisible, true);
         } catch (Exception e) {
@@ -199,7 +199,7 @@ public class BasePage {
 
     public boolean isElementVisible(By loc, long timeoutInSec) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, timeoutInSec, 0);
+            WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
             highlight(element);
             setElement(element);
