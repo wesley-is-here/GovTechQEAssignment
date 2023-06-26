@@ -209,9 +209,13 @@ public class BasePage {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
             highlight(element);
+            // Set the 'webElement' variable with the newly found visible element
             setElement(element);
+            // Return true to indicate that the element is visible
             return true;
         } catch (TimeoutException e) {
+            // Catch a TimeoutException if the element does not become visible within the specified timeout
+            // Return false to indicate that the element is not visible
             return false;
         }
     }
