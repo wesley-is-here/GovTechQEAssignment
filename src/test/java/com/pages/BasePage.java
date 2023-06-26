@@ -42,10 +42,6 @@ public class BasePage {
 
     public JavascriptExecutor js;
 
-    public WebElement getElement() {
-        return webElement;
-    }
-
     protected void setElement(WebElement element) {
         this.webElement = element;
     }
