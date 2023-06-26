@@ -349,6 +349,7 @@ public class BasePage {
     public void waitFor(double waitInSec) {
         try {
             if (waitInSec < 0 || waitInSec > 500) {
+                // signal to the caller of a method that the argument provided is invalid based on certain criteria or constraints (wait is less than 0 or greater than 500)
                 throw new IllegalArgumentException("Wait is specified is greater than 500 sec.");
             }
             log.info("waiting for " + (long) (waitInSec * 1000) + " sec...");
