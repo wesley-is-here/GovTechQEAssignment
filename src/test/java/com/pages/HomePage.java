@@ -174,8 +174,10 @@ public class HomePage extends BasePage {
     }
 
 
+    // playback will occur once if the video is playing initially
     public void checkVideoPlaying() {
         By videoElement = By.xpath("//video");
+        // Check if the video is currently playing
         Boolean isPlaying = isVideoPlaying(videoElement);
 
         if (isPlaying) {
@@ -189,6 +191,7 @@ public class HomePage extends BasePage {
             // (Click once to repeat - allowing playback of the current selected video)
             By playButton = By.xpath("//*[@title='Play']");
             click(playButton);
+            // Recheck if the video is playing after initiating playback
             isPlaying = isVideoPlaying(videoElement);
 
 
