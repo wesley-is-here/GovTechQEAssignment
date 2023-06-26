@@ -33,15 +33,19 @@ public class BasePage {
     Logger log = LoggerFactory.getLogger(BasePage.class);
     private WebElement webElement;
 
+    public JavascriptExecutor js;
+
+
 
     public BasePage(WebDriver driver, WebDriverWait wait) {
+        // this keyword - used within a class to refer to its own instance variables
+        // constructor initializes the state of the BasePage object by assigning the provided driver and wait objects to the corresponding instance variables
         this.driver = driver;
         this.wait = wait;
+        // sets up a JavascriptExecutor instance for possible JavaScript execution
         this.js = (JavascriptExecutor) driver;
     }
 
-    public JavascriptExecutor js;
-    
 
     protected void highlight(WebElement element) {
         js.executeScript("arguments[0].style.border='solid 2px orange'", element);
