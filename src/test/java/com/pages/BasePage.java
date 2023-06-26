@@ -41,10 +41,7 @@ public class BasePage {
     }
 
     public JavascriptExecutor js;
-
-    protected void setElement(WebElement element) {
-        this.webElement = element;
-    }
+    
 
     protected void highlight(WebElement element) {
         js.executeScript("arguments[0].style.border='solid 2px orange'", element);
@@ -209,8 +206,6 @@ public class BasePage {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
             highlight(element);
-            // Set the 'webElement' variable with the newly found visible element
-            setElement(element);
             // Return true to indicate that the element is visible
             return true;
         } catch (TimeoutException e) {
