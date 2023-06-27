@@ -387,6 +387,7 @@ public class BasePage {
             log.error("Invalid argument: " + e.getMessage());
             // Handle the exception, e.g., provide a default wait time or take appropriate action
         } catch (InterruptedException e) {
+            // sets the interrupt status of the current thread, indicating that it has been interrupted.
             Thread.currentThread().interrupt();
             log.error("Thread sleep was interrupted: " + e.getMessage());
             // Handle the interrupted exception, e.g., re-interrupt the thread or take appropriate action
