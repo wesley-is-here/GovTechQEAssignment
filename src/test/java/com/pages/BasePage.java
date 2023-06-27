@@ -4,7 +4,6 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.openqa.selenium.*;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -142,14 +141,11 @@ public class BasePage {
             highlight(webElement);
             return webElement;
         } catch (StaleElementReferenceException e) {
-            // Retry finding the element in case of stale reference exception
-            return waitForVisibilityOfElement(loc);
+            webElement = waitForVisibilityOfElement(loc);
+            return webElement;
         } catch (Exception e) {
-            // Handle the exception, e.g., logging the error
-            System.err.println("Exception occurred while waiting for element visibility: " + e.getMessage());
-            // Perform any other necessary error handling
-            // Return null or a default value indicating failure, depending on your requirements
-            return null;
+            // Re-throw the exception for further handling or logging in other methods
+            throw e;
         }
     }
 
@@ -162,38 +158,26 @@ public class BasePage {
             highlight(elements);
             return elements;
         } catch (Exception e) {
-            // Handle the exception, e.g., logging the error
-            System.err.println("Exception occurred while waiting for elements visibility: " + e.getMessage());
-            // Perform any other necessary error handling
-            // Return an empty list or null, depending on your requirements
-            return Collections.emptyList();
+            throw e;
         }
     }
-
 
 
     // waits for an element specified by the locator to become visible within the given timeout period
     public WebElement waitForVisibilityOfElement(By loc, long timeoutInSec) {
+        WebElement element;
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
-            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
+            element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
             highlight(element);
             return element;
         } catch (TimeoutException e) {
-            // Handle the timeout exception, e.g., logging the error
-            System.err.println("Timeout occurred while waiting for element visibility: " + e.getMessage());
-            // Perform any other necessary error handling
-            // Return null or a default value indicating failure, depending on your requirements
-            return null;
+            element = findElement(loc);
+            return element;
         } catch (Exception e) {
-            // Handle any other exception, e.g., logging the error
-            System.err.println("Exception occurred while waiting for element visibility: " + e.getMessage());
-            // Perform any other necessary error handling
-            // Return null or a default value indicating failure, depending on your requirements
-            return null;
+            throw e;
         }
     }
-
 
     // waits for an element specified by the locator to become invisible within the given timeout period
     public void waitForInVisibilityOfElement(By loc, long timeoutInSec) {
@@ -201,11 +185,8 @@ public class BasePage {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             boolean isInvisible = wait.until(ExpectedConditions.invisibilityOf(findElement(loc)));
             Assert.assertEquals(isInvisible, true);
-        } catch (TimeoutException e) {
-            // Handle any other exception, e.g., logging the error
-            System.err.println("Timeout occurred while waiting for element visibility: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("Exception occurred while waiting for element visibility: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -220,9 +201,7 @@ public class BasePage {
             element = findElement(loc);
             return element;
         } catch (Exception e) {
-            // Handle any other exception, e.g., logging the error
-            System.err.println("Exception occurred while waiting for element visibility: " + e.getMessage());
-            return null;
+            throw e;
         }
     }
 
@@ -247,9 +226,9 @@ public class BasePage {
         try {
             driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
             return driver.findElement(loc);
-        } catch (NoSuchElementException e) {
-            System.err.println("Element not found: " + loc);
-            return null;
+        } catch (Exception e) {
+            driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+            throw e;
         }
     }
 
@@ -259,12 +238,11 @@ public class BasePage {
         try {
             driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
             return driver.findElements(loc);
-        } catch (NoSuchElementException e) {
-            System.err.println("No elements found: " + loc);
-            return Collections.emptyList();
+        } catch (Exception e) {
+            driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+            throw e;
         }
     }
-
 
 
     protected void waitForFileToDownload() {
@@ -362,16 +340,10 @@ public class BasePage {
         // ExpectedCondition is a class that provides various conditions to wait for in order to synchronize tests with the application under test
         ExpectedCondition<Boolean> expectation = driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").toString().equals("complete");
         try {
-            log.info("Waiting for page load...");
-            WebDriverWait wait = new WebDriverWait(driver, 10); // Add a timeout of 10 seconds
+            log.info("waiting for page load...");
             wait.until(expectation);
-            log.info("Page load completed.");
-        } catch (TimeoutException e) {
-            // Handle TimeoutException error
-            log.error("Timeout occurred while waiting for page to load: " + e.getMessage());
         } catch (Exception e) {
-            // Handle any other exception, e.g., logging the error
-            log.error("An error occurred while waiting for page to load: " + e.getMessage());
+            throw e;
         }
     }
 
@@ -379,24 +351,15 @@ public class BasePage {
     public void waitFor(double waitInSec) {
         try {
             if (waitInSec < 0 || waitInSec > 500) {
-                throw new IllegalArgumentException("Wait time specified is invalid. Wait time should be between 0 and 500 seconds.");
+                // signal to the caller of a method that the argument provided is invalid based on certain criteria or constraints ()
+                throw new IllegalArgumentException("Wait is specified is greater than 500 sec.");
             }
-            log.info("Waiting for " + (long) (waitInSec * 1000) + " milliseconds...");
+            log.info("waiting for " + (long) (waitInSec * 1000) + " sec...");
             Thread.sleep((long) (waitInSec * 1000));
-        } catch (IllegalArgumentException e) {
-            log.error("Invalid argument: " + e.getMessage());
-            // Handle the exception, e.g., provide a default wait time or take appropriate action
-        } catch (InterruptedException e) {
-            // sets the interrupt status of the current thread, indicating that it has been interrupted.
-            Thread.currentThread().interrupt();
-            log.error("Thread sleep was interrupted: " + e.getMessage());
-            // Handle the interrupted exception, e.g., re-interrupt the thread or take appropriate action
         } catch (Exception e) {
-            log.error("An error occurred during the wait: " + e.getMessage());
-            // Handle other exceptions, e.g., log the error or take appropriate action
+            e.printStackTrace();
         }
     }
-
 
 
     protected void switchToNewWindow(String title) {
