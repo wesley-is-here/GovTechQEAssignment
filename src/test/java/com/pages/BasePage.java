@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -141,15 +142,19 @@ public class BasePage {
             highlight(webElement);
             return webElement;
         } catch (StaleElementReferenceException e) {
-            webElement = waitForVisibilityOfElement(loc);
-            return webElement;
+            // Retry finding the element in case of stale reference exception
+            return waitForVisibilityOfElement(loc);
         } catch (Exception e) {
-            // Re-throw the exception for further handling or logging in other methods
-            throw e;
+            // Handle the exception, e.g., logging the error
+            System.err.println("Exception occurred while waiting for element visibility: " + e.getMessage());
+            // Perform any other necessary error handling
+            // Return null or a default value indicating failure, depending on your requirements
+            return null;
         }
     }
 
-  // method waits for multiple elements specified by the locator to become visible.
+
+    // method waits for multiple elements specified by the locator to become visible.
   // Once all the elements become visible, the references to the located elements are returned as a list
     public List<WebElement> waitForVisibilityOfElements(By loc) {
         try {
@@ -157,26 +162,38 @@ public class BasePage {
             highlight(elements);
             return elements;
         } catch (Exception e) {
-            throw e;
+            // Handle the exception, e.g., logging the error
+            System.err.println("Exception occurred while waiting for elements visibility: " + e.getMessage());
+            // Perform any other necessary error handling
+            // Return an empty list or null, depending on your requirements
+            return Collections.emptyList();
         }
     }
+
 
 
     // waits for an element specified by the locator to become visible within the given timeout period
     public WebElement waitForVisibilityOfElement(By loc, long timeoutInSec) {
-        WebElement element;
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
-            element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
+            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
             highlight(element);
             return element;
         } catch (TimeoutException e) {
-            element = findElement(loc);
-            return element;
+            // Handle the timeout exception, e.g., logging the error
+            System.err.println("Timeout occurred while waiting for element visibility: " + e.getMessage());
+            // Perform any other necessary error handling
+            // Return null or a default value indicating failure, depending on your requirements
+            return null;
         } catch (Exception e) {
+            // Handle any other exception, e.g., logging the error
+            System.err.println("Exception occurred while waiting for element visibility: " + e.getMessage());
+            // Perform any other necessary error handling
+            // Return null or a default value indicating failure, depending on your requirements
             return null;
         }
     }
+
 
     // waits for an element specified by the locator to become invisible within the given timeout period
     public void waitForInVisibilityOfElement(By loc, long timeoutInSec) {
@@ -184,8 +201,11 @@ public class BasePage {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             boolean isInvisible = wait.until(ExpectedConditions.invisibilityOf(findElement(loc)));
             Assert.assertEquals(isInvisible, true);
+        } catch (TimeoutException e) {
+            // Handle any other exception, e.g., logging the error
+            System.err.println("Timeout occurred while waiting for element visibility: " + e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Exception occurred while waiting for element visibility: " + e.getMessage());
         }
     }
 
@@ -200,6 +220,8 @@ public class BasePage {
             element = findElement(loc);
             return element;
         } catch (Exception e) {
+            // Handle any other exception, e.g., logging the error
+            System.err.println("Exception occurred while waiting for element visibility: " + e.getMessage());
             return null;
         }
     }
@@ -220,26 +242,29 @@ public class BasePage {
     }
 
 
+    // method attempts to find and return a WebElement based on the provided locator
     public WebElement findElement(By loc) {
         try {
             driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
             return driver.findElement(loc);
-        } catch (Exception e) {
-            driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-            throw e;
+        } catch (NoSuchElementException e) {
+            System.err.println("Element not found: " + loc);
+            return null;
         }
     }
 
 
+    // method is used to locate and return a list of WebElement objects based on the provided locator (By object)
     public List<WebElement> findElements(By loc) {
         try {
             driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
             return driver.findElements(loc);
-        } catch (Exception e) {
-            driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-            throw e;
+        } catch (NoSuchElementException e) {
+            System.err.println("No elements found: " + loc);
+            return Collections.emptyList();
         }
     }
+
 
 
     protected void waitForFileToDownload() {
@@ -332,16 +357,19 @@ public class BasePage {
 
 
     public void waitForPageToLoad() {
-
         //  expectation is that the readyState of the document should be "complete" for the page to be considered fully loaded.
         //  This condition is commonly used to ensure that the page has finished loading before performing further interactions or assertions in Selenium tests
         // ExpectedCondition is a class that provides various conditions to wait for in order to synchronize tests with the application under test
         ExpectedCondition<Boolean> expectation = driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").toString().equals("complete");
         try {
-            log.info("waiting for page load...");
+            log.info("Waiting for page load...");
+            WebDriverWait wait = new WebDriverWait(driver, 10); // Add a timeout of 10 seconds
             wait.until(expectation);
-        } catch (Exception e) {
-            throw e;
+            log.info("Page load completed.");
+        } catch (TimeoutException e) {
+            String errorMessage = "Timeout occurred while waiting for page to load.";
+            log.error(errorMessage);
+            throw new RuntimeException(errorMessage, e);
         }
     }
 
