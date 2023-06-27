@@ -285,6 +285,9 @@ public class BasePage {
         catch (ElementClickInterceptedException | StaleElementReferenceException e) {
             clickUsingJS(locator);
         }
+        catch (Exception e) {
+            throw e;
+        }
     }
 
     protected void moveSliderToPosition(By by, int percentage) {
