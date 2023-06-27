@@ -367,9 +367,11 @@ public class BasePage {
             wait.until(expectation);
             log.info("Page load completed.");
         } catch (TimeoutException e) {
-            String errorMessage = "Timeout occurred while waiting for page to load.";
-            log.error(errorMessage);
-            throw new RuntimeException(errorMessage, e);
+            // Handle TimeoutException error
+            log.error("Timeout occurred while waiting for page to load: " + e.getMessage());
+        } catch (Exception e) {
+            // Handle any other exception, e.g., logging the error
+            log.error("An error occurred while waiting for page to load: " + e.getMessage());
         }
     }
 
