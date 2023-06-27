@@ -227,7 +227,6 @@ public class BasePage {
             driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
             return driver.findElement(loc);
         } catch (Exception e) {
-            driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
             throw e;
         }
     }
