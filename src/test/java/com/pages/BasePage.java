@@ -379,15 +379,23 @@ public class BasePage {
     public void waitFor(double waitInSec) {
         try {
             if (waitInSec < 0 || waitInSec > 500) {
-                // signal to the caller of a method that the argument provided is invalid based on certain criteria or constraints (wait is less than 0 or greater than 500)
-                throw new IllegalArgumentException("Wait is specified is greater than 500 sec.");
+                throw new IllegalArgumentException("Wait time specified is invalid. Wait time should be between 0 and 500 seconds.");
             }
-            log.info("waiting for " + (long) (waitInSec * 1000) + " sec...");
+            log.info("Waiting for " + (long) (waitInSec * 1000) + " milliseconds...");
             Thread.sleep((long) (waitInSec * 1000));
+        } catch (IllegalArgumentException e) {
+            log.error("Invalid argument: " + e.getMessage());
+            // Handle the exception, e.g., provide a default wait time or take appropriate action
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.error("Thread sleep was interrupted: " + e.getMessage());
+            // Handle the interrupted exception, e.g., re-interrupt the thread or take appropriate action
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("An error occurred during the wait: " + e.getMessage());
+            // Handle other exceptions, e.g., log the error or take appropriate action
         }
     }
+
 
 
     protected void switchToNewWindow(String title) {
