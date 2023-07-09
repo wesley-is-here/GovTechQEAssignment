@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.steps._Hooks;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class HomePage extends BasePage {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
-    Logger logger = LoggerFactory.getLogger(_Hooks.class);
+    Logger logger = LoggerFactory.getLogger(HomePage.class);
 
 
     public HomePage(WebDriver driver, WebDriverWait wait) {
@@ -72,6 +72,8 @@ public class HomePage extends BasePage {
 
     private By tiledView = By.id("grid-view");
 
+    private By errorMsg = By.id("passwordError");
+
 
     public void launchURL(String url) {
         getURL(url);
@@ -98,6 +100,7 @@ public class HomePage extends BasePage {
     }
 
     public void yesButtonConfirm() {
+        waitFor(1);
         click(yesButton);
     }
 
@@ -109,6 +112,12 @@ public class HomePage extends BasePage {
 
 
     public void uploadFile(String filename) {
+    // Path from Content Root: resources/VideoUpload/Video_2.mp4
+    // System.getProperty("user.dir") - used to retrieve the current working directory of the user.
+    // working directory refers to the directory in the file system from which the Java application was launched or is currently executing. It represents the starting point for resolving relative file paths
+    // File.separator constant is used to represent the platform-specific file separator character.
+    // File.separator is used instead of hardcoding a specific character like / or \ is to ensure platform independence and portability of code. Different operating systems use different characters as file separators.
+    // Windows uses backslash \ (e.g., C:\folder\file.txt), while Unix-like systems (including Linux and macOS) use forward slash /
         String file = System.getProperty("user.dir") + File.separator + "resources" + File.separator + "VideoUpload" + File.separator + filename;
         waitForPresenceOfElement(fileUpload).sendKeys(file);
         waitFor(1);
@@ -150,6 +159,7 @@ public class HomePage extends BasePage {
     }
 
     public void waitForIndexComplete() {
+        waitFor(2);
         waitForInVisibilityOfElement(txtIndex, 500);
     }
 
@@ -174,6 +184,7 @@ public class HomePage extends BasePage {
     }
 
 
+
     // playback will occur once if the video is playing initially
     public void checkVideoPlaying() {
         By videoElement = By.xpath("//video");
@@ -195,7 +206,7 @@ public class HomePage extends BasePage {
             isPlaying = isVideoPlaying(videoElement);
 
 
-            // Continuously check if the video starts playing
+            // Continuously check if the video starts playing [!isPlaying = Not Playing]
             while (!isPlaying) {
                 waitFor(1); // Wait for 1 second
                 // Verify that the video is now playing
@@ -213,6 +224,7 @@ public class HomePage extends BasePage {
     }
 
     public void clickDownloadCompletedInsights(String insight) {
+        waitFor(1);
         By insightDownload = By.xpath("//*[@id='submenu-download-insights']/li[@title='" + insight + "']");
         click(insightDownload);
         waitForFileToDownload();
@@ -229,7 +241,6 @@ public class HomePage extends BasePage {
             case "Audio":
                 By insightsBar = By.cssSelector("#acousticEventsComponent > div.row.timeline.ng-star-inserted > div > app-vi-insights-horizontal-timeline > div.horizontal-timeline > svg > rect.transition.bar");
                 moveSliderToPosition(insightsBar, num);
-                // Code to execute when variable is 1
                 break;
             case "Keywords":
                 insightsBar = By.cssSelector("#keywordsComponent > div.row.timeline.ng-star-inserted > div > app-vi-insights-horizontal-timeline > div.horizontal-timeline > svg > rect.transition.bar");
@@ -303,18 +314,24 @@ public class HomePage extends BasePage {
     }
 
     public void checkIndexes() {
+        // Wait for the visibility of elements identified by txtPresenceIndex locator
         List<WebElement> elements = waitForVisibilityOfElements(txtPresenceIndex);
+        // Log the number of indexed videos
         logger.info("There are " + elements.size() + " indexed videos.");
     }
 
-    public void hoverVideoTiles() {
-        List<WebElement> elements = waitForVisibilityOfElements(txtPresenceIndex);
-        for (WebElement ele : elements) {
-            mouseHover(ele);
-            waitFor(2);
-        }
 
+    public void hoverVideoTiles() {
+        // Wait for the visibility of elements identified by txtPresenceIndex locator
+        List<WebElement> elements = waitForVisibilityOfElements(txtPresenceIndex);
+        // Iterate through each WebElement in the list using a for-each loop
+        for (WebElement ele : elements) {
+            // Perform a mouse hover action on each element
+            mouseHover(ele);
+            waitFor(1.2);
+        }
     }
+
 
     public void viewDropDown() {
         click(viewDropDown);
@@ -338,4 +355,11 @@ public class HomePage extends BasePage {
     }
 
 
+    public void verifyErrorMessage() {
+        waitFor(3);
+        String error = getText(errorMsg);
+        logger.info(error);
+        String actualError = "Your account or password is incorrect.";
+        Assert.assertTrue(error.contains(actualError));
+    }
 }

@@ -37,7 +37,7 @@ public class _Hooks {
         // HashMap named chromePrefs is created to store the Chrome browser preferences. The key-value pairs in the map define the specific preferences.
         //"profile.default_content_settings.popups", 0 sets the default behavior for pop-up windows to be blocked.
         //"download.default_directory", downloadFilepath specifies the default directory where downloaded files will be saved. It uses the downloadFilepath variable that we defined.
-        HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+        HashMap<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("profile.default_content_settings.popups", 0);
         chromePrefs.put("download.default_directory", downloadFilepath);
         // ChromeOptions object named options1 is created to set additional browser options.
@@ -47,11 +47,11 @@ public class _Hooks {
 
         // initialize driver
         driver = new ChromeDriver(options1);
-//        explicit wait (wait till condition meet , max 30 secs)
+//        explicit wait (wait till condition meet , max 30 secs), explicit wait applies to only particular webelements
         wait = new WebDriverWait(driver,30);
 
-//        implicit wait (fix time wait of 2 seconds)
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+//        implicit wait (fix time wait of 4 seconds), implicit wait applies to all webelements, we need to declare once and use (build in values)
+//        driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
     }
 
 

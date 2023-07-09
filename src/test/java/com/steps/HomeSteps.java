@@ -223,5 +223,14 @@ public class HomeSteps {
     }
 
 
+    @And("wait some time for Pop-Up to diminish")
+    public void waitSomeTimeForPopUpToDiminish() {
+        homepage.waitFor(7);
+    }
+
+    @And("page is not loaded as account or password is incorrect")
+    public void pageIsNotLoaded() {
+        homepage.verifyErrorMessage();
+    }
 }
 

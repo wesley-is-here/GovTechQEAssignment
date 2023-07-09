@@ -3,16 +3,18 @@ Feature: QE Tech Challenge
   Background:
     Given user launches the url "https://www.videoindexer.ai"
     And I click on Personal Microsoft Account
-    And I enter my email "testing8692@outlook.com" to Microsoft Outlook Login Page
+    And I enter my email "testing8694@outlook.com" to Microsoft Outlook Login Page
     Then I click on next button on Microsoft Outlook Login Page
-    And I enter my password "password12345" to Microsoft Outlook Login Page
-    Then I click on Sign In button on Microsoft Outlook Login Page
-    And I click on Yes to confirm Sign In
-    Then I check video-indexer.ai media library page is loaded
+
 
   @UserStory1
   Scenario Outline: User Story 1 – Add A Video
-    Given I click on Upload button
+    And I enter my password "password888" to Microsoft Outlook Login Page
+    Then I click on Sign In button on Microsoft Outlook Login Page
+    And I click on Yes to confirm Sign In
+    Then I check video-indexer.ai media library page is loaded
+    And wait some time for Pop-Up to diminish
+    And I click on Upload button
     And I upload the video file "<Video>"
     And I select Privacy drop down option to "<PrivacyType>"
     And I select Video source language drop down option to "<Language>"
@@ -32,7 +34,12 @@ Feature: QE Tech Challenge
 
   @UserStory2
   Scenario: User Story 2 – View Video Insights
-    Given I click on the video file "Video_2"
+    Given I enter my password "password888" to Microsoft Outlook Login Page
+    Then I click on Sign In button on Microsoft Outlook Login Page
+    And I click on Yes to confirm Sign In
+    Then I check video-indexer.ai media library page is loaded
+    And wait some time for Pop-Up to diminish
+    And I click on the video file "Video_2"
     And I check if video player is displayed
     Then I check if video is still playing if not click on play once
     And I should see the segment "audio effect (preview)"
@@ -58,7 +65,12 @@ Feature: QE Tech Challenge
 
   @UserStory3
   Scenario: User Story 3 – Search Videos with Insights
-    Given I click on Filter button
+    Given I enter my password "password888" to Microsoft Outlook Login Page
+    Then I click on Sign In button on Microsoft Outlook Login Page
+    And I click on Yes to confirm Sign In
+    Then I check video-indexer.ai media library page is loaded
+    And wait some time for Pop-Up to diminish
+    And I click on Filter button
     And I select Search In drop down option to "Entire video"
     And I select Insight Type drop down option to "People"
     And I enter "Video_3" text into Search Box
@@ -72,7 +84,11 @@ Feature: QE Tech Challenge
 
 
 
-
+  @NegativeTestCase
+  Scenario: Login Fail
+    Given I enter my password "1" to Microsoft Outlook Login Page
+    And I click on Sign In button on Microsoft Outlook Login Page
+    Then page is not loaded as account or password is incorrect
 
 
 
