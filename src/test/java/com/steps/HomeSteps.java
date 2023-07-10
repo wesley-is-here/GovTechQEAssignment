@@ -232,9 +232,9 @@ public class HomeSteps {
     }
 
 
-    @And("wait some time for Pop-Up to diminish")
-    public void waitSomeTimeForPopUpToDiminish() {
-        homepage.waitFor(7);
+    @And("click or wait some time for Pop-Up to diminish")
+    public void clickOrWaitTimeForPopUpToDiminish() {
+        homepage.clickOrWaitForPopupGone();
     }
 
     @And("I verify error on page {string}")

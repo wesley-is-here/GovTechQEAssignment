@@ -13,7 +13,7 @@ Feature: QE Tech Challenge
     When I click on Sign In button on Microsoft Outlook Login Page
     And I click on Yes to confirm Sign In
     Then I check video-indexer.ai media library page is loaded
-    And wait some time for Pop-Up to diminish
+    And click or wait some time for Pop-Up to diminish
     When I click on Upload button
     And I upload the video file "<Video>"
     And I select Privacy drop down option to "<PrivacyType>"
@@ -31,14 +31,13 @@ Feature: QE Tech Challenge
       | Video_3.mp4 | Public      | Danish   | Video_3   |
 
 
-
   @UserStory2
   Scenario: User Story 2 – View Video Insights
     Given I enter my password "password888" to Microsoft Outlook Login Page
     When I click on Sign In button on Microsoft Outlook Login Page
     And I click on Yes to confirm Sign In
     Then I check video-indexer.ai media library page is loaded
-    And wait some time for Pop-Up to diminish
+    And click or wait some time for Pop-Up to diminish
     When I click on the video file "Video_2"
     And I check if video player is displayed
     Then I check if video is still playing if not click on play once
@@ -69,7 +68,7 @@ Feature: QE Tech Challenge
     When I click on Sign In button on Microsoft Outlook Login Page
     And I click on Yes to confirm Sign In
     Then I check video-indexer.ai media library page is loaded
-    And wait some time for Pop-Up to diminish
+    And click or wait some time for Pop-Up to diminish
     When I click on Filter button
     And I select Search In drop down option to "Entire video"
     And I select Insight Type drop down option to "People"

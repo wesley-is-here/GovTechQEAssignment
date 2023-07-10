@@ -261,7 +261,7 @@ public class BasePage {
 
 
     public void waitForFileToDownload() {
-        // Specify the download directory
+        // Specify the download directory (By default, searches through root directory)
         File dir = new File(DEFAULT_DOWNLOAD_DIRECTORY);
         // Create an array to store the contents of the download directory
         File[] dirContents;
@@ -280,7 +280,7 @@ public class BasePage {
             if (dirContents.length >= 1) {
                 // crdownload: This extension indicates that the file is being downloaded
                 // tmp: This extension indicates a temporary file created during download
-                isDownloading = Arrays.stream(dirContents).anyMatch(i -> (i.getName().contains(".crdownload") || i.getName().contains(".tmp")));
+                isDownloading = Arrays.stream(dirContents).anyMatch(i -> (i.getName().contains(".crdownload") || i.getName().contains(".tmp")));  // download in progress - shows these 2
 
                 // Log the downloading file
                 log.info("File is downloading: " + dirContents[0]);
@@ -321,6 +321,21 @@ public class BasePage {
         }
     }
 
+    public void clickIfDisplayed(By locator,long timeoutInSec) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
+            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            highlight(element);
+            element.click();
+        }
+        catch (ElementClickInterceptedException | StaleElementReferenceException e) {
+            clickUsingJS(locator);
+        }
+        catch (Exception e) {
+            log.info("Element not found.");
+        }
+    }
+
     // can also use 'clickAndHold' instead of 'dragAndDropBy'
     // slider.clickAndHold(Slider).moveByOffset(380,0).build().perform(); [find the pixel at halfway through the video, add in value (380px) if compared to 50% in video percentage]
     // slider.dragAndDropBy(Slider, percentage, 0).build().perform();
@@ -347,7 +362,7 @@ public class BasePage {
     }
 
     protected void clearDownloadDirectory() throws IOException {
-        // Specify the download directory
+        // Specify the download directory (By default, searches through root directory)
         File dir = new File(DEFAULT_DOWNLOAD_DIRECTORY);
         // Clear the contents of the directory
         FileUtils.cleanDirectory(dir);

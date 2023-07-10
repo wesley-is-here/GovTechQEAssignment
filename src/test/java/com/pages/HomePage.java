@@ -16,8 +16,6 @@ import java.util.List;
 
 public class HomePage extends BasePage {
 
-    protected WebDriver driver;
-    protected WebDriverWait wait;
     Logger logger = LoggerFactory.getLogger(HomePage.class);
 
 
@@ -25,9 +23,6 @@ public class HomePage extends BasePage {
         // super: It is a keyword used to access or invoke members (methods or variables) of the parent class
         // code assigns the driver and wait parameters to the respective member variables in the HomePage class (this.driver and this.wait)
         super(driver, wait);
-        // this: It is a keyword that refers to the current instance of a class.
-        this.driver = driver;
-        this.wait = wait;
     }
 
     // This is for this assignment (private - limit access to this class only)
@@ -73,6 +68,8 @@ public class HomePage extends BasePage {
     private By tiledView = By.id("grid-view");
 
     private By errorMsg = By.id("passwordError");
+
+    private By btnPopUpClose = By.cssSelector("div > div > span > div.notification-title > i.vi-delete-parent.i-vi-close-big");
 
 
     public void launchURL(String url) {
@@ -362,4 +359,7 @@ public class HomePage extends BasePage {
         return wholeError;
     }
 
+    public void clickOrWaitForPopupGone() {
+        clickIfDisplayed(btnPopUpClose,  7);
+    }
 }
