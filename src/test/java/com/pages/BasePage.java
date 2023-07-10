@@ -244,7 +244,7 @@ public class BasePage {
             // unlike Thread.sleep(), it does not wait for the complete duration of time.
             // In case it finds the element before the duration specified, it moves on to the next line of code execution, thereby reducing the time of script execution.
             // cannot wait based on a specified condition like element selectable/clickable unlike explicit.
-            // usually used when you are sure the element may be visible in a certain time
+            // usually used when you are sure the element may be visible in a certain time (used for simple method like, findElement)
             driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             return driver.findElement(loc);
         } catch (Exception e) {
