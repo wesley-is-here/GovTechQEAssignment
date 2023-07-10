@@ -88,7 +88,7 @@ Feature: QE Tech Challenge
   Scenario: Login Fail
     Given I enter my password "1" to Microsoft Outlook Login Page
     And I click on Sign In button on Microsoft Outlook Login Page
-    Then page is not loaded as account or password is incorrect
+    Then I verify error on page "Your account or password is incorrect."
 
 
 

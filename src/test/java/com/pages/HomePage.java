@@ -2,7 +2,6 @@ package com.pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -164,10 +163,11 @@ public class HomePage extends BasePage {
         waitForInVisibilityOfElement(txtIndex, 500);
     }
 
-    public void videoVisible(String text) {
+    public String videoVisible(String text) {
         By videoName = By.xpath("//span[normalize-space()='" + text + "' and @title='" + text + "']");
         String name = getText(videoName);
-        Assert.assertEquals(text, name.trim());
+        logger.info(name);
+        return name;
     }
 
     public void videoClick(String text) throws IOException {
@@ -356,11 +356,11 @@ public class HomePage extends BasePage {
     }
 
 
-    public void verifyErrorMessage() {
+    public String verifyErrorMessage() {
         waitFor(2);
-        String error = getText(errorMsg);
-        logger.info(error);
-        String imptError = "Your account or password is incorrect.";
-        Assert.assertTrue(error.contains(imptError));
+        String wholeError = getText(errorMsg);
+        logger.info(wholeError);
+        return wholeError;
     }
+
 }

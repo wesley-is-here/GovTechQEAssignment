@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -13,10 +14,17 @@ import java.io.IOException;
 
 public class HomeSteps {
 
+//  step definition class that contains the implementation of test steps related to the home page
+//  interact with the elements on the home page, perform actions, and make assertions to validate the expected behavior.
+//  To perform these actions and assertions, it needs access to the WebDriver instance (to control the browser) and the WebDriverWait instance (to wait for specific conditions).
 
+    // Retrieve the WebDriver instance from the _Hooks class
     WebDriver driver = _Hooks.driver;
+    // Retrieve the WebDriverWait instance from the _Hooks class
     WebDriverWait wait = _Hooks.wait;
+    // Create a new instance of the HomePage class, passing the WebDriver and WebDriverWait instances
     HomePage homepage = new HomePage(driver, wait);
+
 
 
     @Given("user launches the url {string}")
@@ -111,8 +119,9 @@ public class HomeSteps {
     }
 
     @And("I check video {string} is visible")
-    public void videoIsVisible(String text) {
-        homepage.videoVisible(text);
+    public void videoIsVisible(String video) {
+        String videoName = homepage.videoVisible(video);
+        Assert.assertEquals(video, videoName.trim());
     }
 
 
@@ -228,9 +237,10 @@ public class HomeSteps {
         homepage.waitFor(7);
     }
 
-    @And("page is not loaded as account or password is incorrect")
-    public void pageIsNotLoaded() {
-        homepage.verifyErrorMessage();
+    @And("I verify error on page {string}")
+    public void pageIsNotLoaded(String error) {
+        String wholeError = homepage.verifyErrorMessage();
+        Assert.assertTrue(wholeError.contains(error));
     }
 }
 
