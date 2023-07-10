@@ -24,6 +24,7 @@ public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver, WebDriverWait wait) {
         // super: It is a keyword used to access or invoke members (methods or variables) of the parent class
+        // code assigns the driver and wait parameters to the respective member variables in the HomePage class (this.driver and this.wait)
         super(driver, wait);
         // this: It is a keyword that refers to the current instance of a class.
         this.driver = driver;
@@ -255,7 +256,7 @@ public class HomePage extends BasePage {
                 moveSliderToPosition(insightsBar, num);
                 break;
             default:
-                throw new RuntimeException("insight" + type + "not found.");
+                throw new RuntimeException("insight " + type + " not found.");
         }
         waitFor(2);
     }

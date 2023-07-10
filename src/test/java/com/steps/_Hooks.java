@@ -47,11 +47,9 @@ public class _Hooks {
 
         // initialize driver
         driver = new ChromeDriver(options1);
-//        explicit wait (wait till condition meet , max 30 secs), explicit wait applies to only particular webelements
+//        explicit wait (wait till condition meet , max 30 secs)
         wait = new WebDriverWait(driver,30);
 
-//        implicit wait (fix time wait of 4 seconds), implicit wait applies to all webelements, we need to declare once and use (build in values)
-//        driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
     }
 
 

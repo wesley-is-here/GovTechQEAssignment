@@ -164,20 +164,6 @@ public class BasePage {
         }
     }
 
-
-    // method waits for multiple elements specified by the locator to become visible.
-  // Once all the elements become visible, the references to the located elements are returned as a list
-    public List<WebElement> waitForVisibilityOfElements(By loc) {
-        try {
-            List<WebElement> elements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(loc));
-            highlight(elements);
-            return elements;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-
     // waits for an element specified by the locator to become visible within the given timeout period
     public WebElement waitForVisibilityOfElement(By loc, long timeoutInSec) {
         WebElement element;
@@ -193,6 +179,21 @@ public class BasePage {
             throw e;
         }
     }
+
+
+    // method waits for multiple elements specified by the locator to become visible.
+  // Once all the elements become visible, the references to the located elements are returned as a list
+    public List<WebElement> waitForVisibilityOfElements(By loc) {
+        try {
+            List<WebElement> elements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(loc));
+            highlight(elements);
+            return elements;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+
 
     // waits for an element specified by the locator to become invisible within the given timeout period
     public void waitForInVisibilityOfElement(By loc, long timeoutInSec) {
@@ -240,6 +241,7 @@ public class BasePage {
     // method attempts to find and return a WebElement based on the provided locator
     public WebElement findElement(By loc) {
         try {
+            driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             return driver.findElement(loc);
         } catch (Exception e) {
             throw e;
@@ -250,6 +252,7 @@ public class BasePage {
     // method is used to locate and return a list of WebElement objects based on the provided locator (By object)
     public List<WebElement> findElements(By loc) {
         try {
+            driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             return driver.findElements(loc);
         } catch (Exception e) {
             throw e;
@@ -389,7 +392,7 @@ public class BasePage {
     public void waitFor(double waitInSec) {
         try {
             if (waitInSec < 0 || waitInSec > 500) {
-                // signal to the caller of a method that the argument provided is invalid based on certain criteria or constraints ()
+                // signal to the caller of a method that the argument provided is invalid based on certain criteria or constraints
                 throw new IllegalArgumentException("Wait is specified is greater than 500 sec.");
             }
             log.info("waiting for " + (long) (waitInSec * 1000) + " sec...");
