@@ -125,8 +125,7 @@ public class HomePage extends BasePage {
 
     public void selectTermsAndConditions() {
         waitForVisibilityOfElement(checkBox);
-        String js = "document.querySelector('span.checkbox-text',':before').click()";
-        executeScript(js);
+        click(checkBox);
         waitFor(1);
     }
 
