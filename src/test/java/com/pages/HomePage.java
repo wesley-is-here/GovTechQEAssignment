@@ -357,10 +357,10 @@ public class HomePage extends BasePage {
 
 
     public void verifyErrorMessage() {
-        waitFor(3);
+        waitFor(2);
         String error = getText(errorMsg);
         logger.info(error);
-        String actualError = "Your account or password is incorrect.";
-        Assert.assertTrue(error.contains(actualError));
+        String imptError = "Your account or password is incorrect.";
+        Assert.assertTrue(error.contains(imptError));
     }
 }
