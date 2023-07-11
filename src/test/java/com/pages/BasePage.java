@@ -148,8 +148,9 @@ public class BasePage {
 
     // method waits for an element specified by the locator to become visible.
     // Once the element becomes visible, the reference to the located element is returned.
-    // If a StaleElementReferenceException occurs, the method recursively calls itself to re-locate the element (Recursion)
+    // If a StaleElementReferenceException occurs, the method recursively calls itself to re-locate the element (Recursion) - the element should become valid again if it reappears in the DOM
     //  StaleElementReferenceException : WebDriver tries to interact with an element that has become invalid or no longer exists in the current state of the webpage
+    // In most cases, when you make another attempt to find or interact with the element, it should succeed because the webpage has settled into a new state, and the element has become valid again. The exception was triggered during the transition period when the webpage was changing.
     public WebElement waitForVisibilityOfElement(By loc) {
         try {
             webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
@@ -274,7 +275,7 @@ public class BasePage {
         // set as false to indicate that there are no ongoing downloads
         boolean isDownloading = false;
         int cnt = 0;
-        // While the file is downloading (size < 1) or continuously check [(cnt < 30) -> 30 tries)] 30 * 1 second of waiting = 30 seconds for file to finish download
+        // While the file is downloading (size < 1) and continuously check [(cnt < 30) -> 30 tries)] 30 * 1 second of waiting = 30 seconds for file to finish download
         while ((size < 1) && (cnt < 30)) {
             // Wait for a short period to allow time for the file to download
             waitFor(1);
@@ -293,7 +294,7 @@ public class BasePage {
             if (isDownloading) {
                 size = 0;
             } else {
-                size = dirContents.length; // if downloaded fully, size > 1 - to break the loop
+                size = dirContents.length; // if downloaded fully, size > 0 [1 or more] - to break the loop
             }
             // Increment the counter
             cnt++;
@@ -311,6 +312,8 @@ public class BasePage {
         return element.getAttribute(attribute);
     }
 
+
+    // Click for element located (If not will crash)
     public void click(By locator) {
         try {
             waitForVisibilityOfElement(locator).click();
@@ -325,6 +328,7 @@ public class BasePage {
         }
     }
 
+    // Used for Intermittent PopUp / Display of certain elements (Click - Within a specified time frame) - except won't crash (it will log - "Element not found.")
     public void clickIfDisplayed(By locator,long timeoutInSec) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
