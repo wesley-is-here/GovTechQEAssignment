@@ -418,8 +418,10 @@ public class BasePage {
                 // signal to the caller of a method that the argument provided is invalid based on certain criteria or constraints
                 throw new IllegalArgumentException("Wait is specified is greater than 500 sec.");
             }
-            log.info("waiting for " + (long) (waitInSec * 1000) + " sec...");
-            Thread.sleep((long) (waitInSec * 1000));
+            log.info("waiting for " + waitInSec + " sec...");
+            // Thread.sleep() method expects the argument to be of type long
+            // Thread.sleep(), which expects a long value, the code uses (long) to explicitly cast the result to a long data type.
+            Thread.sleep((long) (waitInSec * 1000));  // Thread.sleep used milliseconds by default
         } catch (Exception e) {
             e.printStackTrace();
         }
