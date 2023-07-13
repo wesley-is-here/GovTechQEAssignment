@@ -242,5 +242,10 @@ public class HomeSteps {
         String wholeError = homepage.verifyErrorMessage();
         Assert.assertTrue(wholeError.contains(error));
     }
+
+    @And("I verify SRT content {string}")
+    public void verifySRTContent(String text) {
+        homepage.verifyContent(text);
+    }
 }
 

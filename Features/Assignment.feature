@@ -82,6 +82,10 @@ Feature: QE Tech Challenge
     Then I select Tiled View
 
 
+  @SRTContentChecking
+  Scenario: Verify SRT content
+  Given I verify SRT content "abc"
+
 
   @NegativeTestCase
   Scenario: Login Fail

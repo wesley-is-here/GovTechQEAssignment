@@ -362,4 +362,15 @@ public class HomePage extends BasePage {
     public void clickOrWaitForPopupGone() {
         clickIfDisplayed(btnPopUpClose,  7);
     }
+
+    public void verifyContent(String expectedText){
+        String SRTFilePath = "downloads/Video_2.srt";
+        boolean isContentValid = verifySRTContent(SRTFilePath, expectedText);
+        if (isContentValid) {
+            logger.info("SRT content contains the expected text.");
+        } else {
+            logger.info("SRT content does not contain the expected text.");
+        }
+    }
+
 }

@@ -12,10 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -105,6 +102,34 @@ public class BasePage {
 
     public void scrollToElement(By element) {
         js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+
+
+     // Verify if the content of an SRT file contains the expected text.
+    protected boolean verifySRTContent(String srtFilePath, String expectedText) {
+        try {
+            // Load the SRT file
+            File file = new File(srtFilePath);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            String line;
+            StringBuilder contentBuilder = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                contentBuilder.append(line);
+                contentBuilder.append(System.lineSeparator());
+            }
+            reader.close();
+
+            // Get the content of the SRT file
+            String srtContent = contentBuilder.toString();
+
+            // Perform assertions or checks on the extracted content
+            return srtContent.contains(expectedText);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
