@@ -103,6 +103,11 @@ public class BasePage {
     }
 
 
+    public void scrollToElement(By element) {
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+
     public void addScreenshot(String filename) {
         try {
             // Capture a screenshot as a byte array using the TakesScreenshot interface
