@@ -114,18 +114,30 @@ public class BasePage {
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
             String line;
+            // Creates a new instance of the StringBuilder class named contentBuilder.
+            //StringBuilder is a mutable sequence of characters that is used to build the content of the SRT file line by line
             StringBuilder contentBuilder = new StringBuilder();
+            // Enters a loop that continues until there are no more lines to read from the BufferedReader
             while ((line = reader.readLine()) != null) {
+            // appends the line to the contentBuilder
                 contentBuilder.append(line);
+            // appends a platform-specific line separator (e.g., newline character) to the contentBuilder after each line.
                 contentBuilder.append(System.lineSeparator());
             }
+            // close the BufferedReader after reading the lines from the SRT file to free up system resources and prevent memory leaks
             reader.close();
 
             // Get the content of the SRT file
             String srtContent = contentBuilder.toString();
 
+            // Convert expectedText to same syntax
+            String expectedTextFinal = expectedText.replace("\\n", System.lineSeparator());
+
+            log.info(srtContent);
+            log.info(expectedTextFinal);
+
             // Perform assertions or checks on the extracted content
-            return srtContent.contains(expectedText);
+            return srtContent.contains(expectedTextFinal);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

@@ -59,7 +59,7 @@ Feature: QE Tech Challenge
     When I click on the download insight button
     Then I click to download "Closed captions" completed insights
     And I click on download button in Pop-Up
-    And I verify SRT content "Der bor."
+    And I verify SRT content "1\n00:00:00,060 --> 00:00:01,800\nDer bor.\n\n2\n00:00:02,130 --> 00:00:04,580\nThree, two way."
     Then I click on cancel button in Pop-Up
 
 
@@ -82,10 +82,6 @@ Feature: QE Tech Challenge
     When I click on view drop down to select view
     Then I select Tiled View
 
-
-  @SRTContentChecking
-  Scenario: Verify SRT content
-  Given I verify SRT content "Der bor."
 
 
   @NegativeTestCase
