@@ -17,6 +17,8 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class BasePage {
@@ -150,6 +152,67 @@ public class BasePage {
             return false;
         }
     }
+
+
+
+    // Method to check SRT content using a string
+    public void checkSRTString(String srtContent) {
+        // Regular expression pattern for matching subtitle entries
+        String subtitleEntryPattern = "\\n(\\d+\\n\\d{2}:\\d{2}:\\d{2},\\d{3}\\s*-->\\s*\\d{2}:\\d{2}:\\d{2},\\d{3}\\n.*)";
+
+        // Match subtitle entries using regex
+        Pattern pattern = Pattern.compile(subtitleEntryPattern, Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(srtContent);
+
+        boolean validSRTFormat = true;
+
+        while (matcher.find()) {
+            String subtitleEntry = matcher.group(1);
+
+            // Split the subtitle entry into index, time range, and subtitle text
+            String[] subtitleParts = subtitleEntry.split("\\n");
+            if (subtitleParts.length >= 3) {
+                String index = subtitleParts[0];
+                String timeRange = subtitleParts[1];
+                String subtitleText = subtitleParts[2];
+
+                // Validate the extracted subtitle elements
+
+                // Example validation: Check if the subtitle index is a sequential number
+                int expectedIndex = Integer.parseInt(index);
+                if (expectedIndex < 1) {
+                    System.out.println("Invalid subtitle index: " + expectedIndex);
+                    validSRTFormat = false;
+                    // Perform appropriate error handling or assertion failure
+                }
+
+                // Example validation: Check if the time range is in the correct format
+                String timeFormatPattern = "\\d{2}:\\d{2}:\\d{2},\\d{3}";
+                if (!timeRange.matches(timeFormatPattern)) {
+                    System.out.println("Invalid time range format: " + timeRange);
+                    validSRTFormat = false;
+                    // Perform appropriate error handling or assertion failure
+                }
+
+                // Example validation: Check if the subtitle text is not empty
+                if (subtitleText.isEmpty()) {
+                    System.out.println("Subtitle text is empty.");
+                    validSRTFormat = false;
+                    // Perform appropriate error handling or assertion failure
+                }
+            } else {
+                System.out.println("Invalid subtitle entry: " + subtitleEntry);
+                validSRTFormat = false;
+                // Perform appropriate error handling or assertion failure
+            }
+        }
+
+        if (validSRTFormat) {
+            System.out.println("Valid SRT Format, no issues!");
+        }
+    }
+
+
 
 
     public void addScreenshot(String filename) {

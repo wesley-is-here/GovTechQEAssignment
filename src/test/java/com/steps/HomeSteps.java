@@ -243,9 +243,12 @@ public class HomeSteps {
         Assert.assertTrue(wholeError.contains(error));
     }
 
-    @And("I verify SRT content {string}")
+
+    @And("I verify SRT content with {string}")
     public void verifySRTContent(String text) {
         homepage.verifyContent(text);
     }
+
+
 }
 
