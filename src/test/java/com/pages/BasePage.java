@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -100,8 +101,14 @@ public class BasePage {
     }
 
 
-    public void scrollToElement(By element) {
-        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    // Method to scroll to a specific element
+    protected void scrollToElement(By locator) {
+        try {
+            WebElement element = findElement(locator);
+            js.executeScript("arguments[0].scrollIntoView(true);", element);
+        } catch (NoSuchElementException | TimeoutException e) {
+            throw new NoSuchElementException("Unable to scroll to element: " + locator);
+        }
     }
 
 
@@ -288,7 +295,7 @@ public class BasePage {
             // In case it finds the element before the duration specified, it moves on to the next line of code execution, thereby reducing the time of script execution.
             // cannot wait based on a specified condition like element selectable/clickable unlike explicit.
             // usually used when you are sure the element may be visible in a certain time (used for simple method like, findElement)
-            driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
             return driver.findElement(loc);
         } catch (Exception e) {
             throw e;
@@ -299,7 +306,7 @@ public class BasePage {
     // method is used to locate and return a list of WebElement objects based on the provided locator (By object)
     public List<WebElement> findElements(By loc) {
         try {
-            driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
             return driver.findElements(loc);
         } catch (Exception e) {
             throw e;
@@ -386,6 +393,16 @@ public class BasePage {
         }
     }
 
+    // Method to check if a WebElement is displayed
+    protected boolean isElementDisplayed(By locator) {
+        try {
+            WebElement element = findElement(locator);
+            return element.isDisplayed();
+        } catch (NoSuchElementException | TimeoutException e) {
+            return false;
+        }
+    }
+
     // can also use 'clickAndHold' instead of 'dragAndDropBy'
     // slider.clickAndHold(Slider).moveByOffset(380,0).build().perform(); [find the pixel at halfway through the video, add in value (380px) if compared to 50% in video percentage]
     // slider.dragAndDropBy(Slider, percentage, 0).build().perform();
@@ -394,22 +411,41 @@ public class BasePage {
     // (emulating real user behavior on the web page, Precise control over timing)
     protected void moveSliderToPosition(By by, int percentage) {
         WebElement Slider = findElement(by);
-        Actions slider = new Actions(driver);
-        slider.dragAndDropBy(Slider, percentage, 0).build().perform();
+        // Check if slider element is displayed
+        if (!isElementDisplayed(by)) {
+            throw new NoSuchElementException("Slider element is not displayed: " + by);
+        }
+        try {
+            Actions actions = new Actions(driver);
+            actions.dragAndDropBy(Slider, percentage, 0).build().perform();
+        }
+        catch (NoSuchElementException | TimeoutException e) {
+            throw new NoSuchElementException("Unable to move slider element: " + by);
+        }
     }
 
-    public WebElement mouseHover(By by) {
-        WebElement element = findElement(by);
-        Actions action = new Actions(driver);
-        action.moveToElement(element).build().perform();
-        return element;
+    // Method to perform a mouse hover action (By Type)
+    protected void mouseHover(By locator) {
+        try {
+            WebElement element = findElement(locator);
+            Actions actions = new Actions(driver);
+            actions.moveToElement(element).build().perform();
+        } catch (NoSuchElementException | TimeoutException e) {
+            throw new NoSuchElementException("Unable to perform hover action on element: " + locator);
+        }
     }
 
-    public WebElement mouseHover(WebElement element) {
-        Actions action = new Actions(driver);
-        action.moveToElement(element).build().perform();
-        return element;
+
+    // Method to perform a mouse hover action (WebElement Type)
+    protected void mouseHover(WebElement element) {
+        try {
+            Actions actions = new Actions(driver);
+            actions.moveToElement(element).build().perform();
+        } catch (NoSuchElementException | TimeoutException e) {
+            throw new NoSuchElementException("Unable to perform hover action on element: " + element);
+        }
     }
+
 
     protected void clearDownloadDirectory() throws IOException {
         // Specify the download directory (By default, searches through root directory)
@@ -453,6 +489,23 @@ public class BasePage {
         }
     }
 
+    // Method to navigate back to the previous page
+    protected void navigateBack() {
+        try {
+            driver.navigate().back();
+        } catch (WebDriverException e) {
+            throw new WebDriverException("Unable to navigate back: " + e.getMessage());
+        }
+    }
+
+    // Method to refresh the current page
+    protected void refreshPage() {
+        try {
+            driver.navigate().refresh();
+        } catch (WebDriverException e) {
+            throw new WebDriverException("Unable to refresh page: " + e.getMessage());
+        }
+    }
 
     public void waitFor(double waitInSec) {
         try {
