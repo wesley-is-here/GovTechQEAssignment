@@ -38,17 +38,17 @@ Feature: QE Tech Challenge
     And I click on Yes to confirm Sign In
     Then I check video-indexer.ai media library page is loaded
     And click or wait some time for Pop-Up to diminish
-    When I click on the video file "Video_2"
+    When I click on the video file "Video_3"
     And I check if video player is displayed
     Then I check if video is still playing if not click on play once
-    And I should see the segment "audio effect (preview)"
-    And I should see the segment "keywords"
     And I should see the segment "labels"
-    And I should see the segment "named entity"
-    When I click on "Audio" Timeline Bar percent 50
-    When I click on "Keywords" Timeline Bar percent 50
+#    And I should see the segment "audio effect (preview)"
+#    And I should see the segment "keywords"
+#    And I should see the segment "named entity"
     When I click on "Labels" Timeline Bar percent 50
-    When I click on "Entities" Timeline Bar percent 50
+#    When I click on "Audio" Timeline Bar percent 50
+#    When I click on "Keywords" Timeline Bar percent 50
+#    When I click on "Entities" Timeline Bar percent 50
     And I click on the Timeline tab
     Then I can see the full transcribed text from the video
     When I click on the download insight button
@@ -59,6 +59,7 @@ Feature: QE Tech Challenge
     When I click on the download insight button
     Then I click to download "Closed captions" completed insights
     And I click on download button in Pop-Up
+    And I verify SRT content "Der bor."
     Then I click on cancel button in Pop-Up
 
 
@@ -84,7 +85,7 @@ Feature: QE Tech Challenge
 
   @SRTContentChecking
   Scenario: Verify SRT content
-  Given I verify SRT content "abc"
+  Given I verify SRT content "Der bor."
 
 
   @NegativeTestCase

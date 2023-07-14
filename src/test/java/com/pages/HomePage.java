@@ -364,7 +364,7 @@ public class HomePage extends BasePage {
     }
 
     public void verifyContent(String expectedText){
-        String SRTFilePath = "downloads/Video_2.srt";
+        String SRTFilePath = "downloads/Video_3.srt";
         boolean isContentValid = verifySRTContent(SRTFilePath, expectedText);
         if (isContentValid) {
             logger.info("SRT content contains the expected text.");
