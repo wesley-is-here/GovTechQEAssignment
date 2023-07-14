@@ -410,17 +410,17 @@ public class BasePage {
     // advantage of clickAndHold() - simulate a mouse click and hold action on a web element; Eg. Click on one file and hold and drop into another location
     // (emulating real user behavior on the web page, Precise control over timing)
     protected void moveSliderToPosition(By by, int percentage) {
-        WebElement Slider = findElement(by);
+        WebElement slider = findElement(by);
         // Check if slider element is displayed
         if (!isElementDisplayed(by)) {
             throw new NoSuchElementException("Slider element is not displayed: " + by);
         }
         try {
             Actions actions = new Actions(driver);
-            actions.dragAndDropBy(Slider, percentage, 0).build().perform();
+            actions.dragAndDropBy(slider, percentage, 0).build().perform();
         }
-        catch (NoSuchElementException | TimeoutException e) {
-            throw new NoSuchElementException("Unable to move slider element: " + by);
+        catch (ElementNotInteractableException e) {
+            throw new ElementNotInteractableException("Unable to move slider element: " + by);
         }
     }
 
