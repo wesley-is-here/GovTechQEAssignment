@@ -1,5 +1,6 @@
 package com.pages;
 
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -374,4 +375,10 @@ public class HomePage extends BasePage {
         }
     }
 
+
+    public void readPDFContent(String pdf, String text, int pageNoStart) {
+        String PDFtext = PDFVerify(pdf, pageNoStart);
+        logger.info(PDFtext);
+        Assert.assertTrue(PDFtext.contains(text));
+    }
 }

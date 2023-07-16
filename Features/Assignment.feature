@@ -83,6 +83,11 @@ Feature: QE Tech Challenge
     Then I select Tiled View
 
 
+  @VerifyPDFDocument
+  Scenario: Verify PDF Document
+    Given I read PDF file "resources/PDFs/sample.pdf" and check its content contains "In pulvinar mattis enim a convallis. Cras aliquet urna faucibus ipsum venenatis venenatis." from page Number 12
+
+
 
   @NegativeTestCase
   Scenario: Login Fail

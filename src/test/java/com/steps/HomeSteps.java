@@ -250,5 +250,11 @@ public class HomeSteps {
     }
 
 
+    @And("I read PDF file {string} and check its content contains {string} from page Number {int}")
+    public void readPDFFile(String PDF, String text, int pageNoStart) {
+        homepage.readPDFContent(PDF, text, pageNoStart);
+    }
+
+
 }
 

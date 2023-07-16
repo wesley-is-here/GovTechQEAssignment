@@ -1,6 +1,8 @@
 package com.pages;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.openqa.selenium.*;
@@ -14,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -153,9 +157,41 @@ public class BasePage {
         }
     }
 
+    // PDF Checking Content Method
+    public String PDFVerify(String filePath, int pageNoStart) {
+
+        // PDFTextStripper from PDFBox Dependency
+        //read full pdf text:
+            String extractedText = "";
+            try (PDDocument document = PDDocument.load(new File(filePath))) {
+                PDFTextStripper stripper = new PDFTextStripper();
+
+                stripper.setStartPage(pageNoStart);
+                extractedText = stripper.getText(document);
+
+                // Print out Meta data of Document
+                log.info("------meta data of pdf-------");
+                System.out.println("Version Name:" + document.getVersion());
+                System.out.println("Can this PDF document be printed:" + document.getCurrentAccessPermission().canPrint());
+                System.out.println("Can this PDF document be read:" + document.getCurrentAccessPermission().isReadOnly());
+
+                System.out.println("PDF Subject:" + document.getDocumentInformation().getSubject());
+                System.out.println("PDF Title:" + document.getDocumentInformation().getTitle());
+                System.out.println("PDF Creator:" + document.getDocumentInformation().getCreator());
+                System.out.println("PDF Creation Date:" + document.getDocumentInformation().getCreationDate());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return extractedText;
+        }
 
 
-    // Method to check SRT content using a string
+
+
+
+
+        // Method to check SRT content using a string
     public void checkSRTString(String srtContent) {
         // Regular expression pattern for matching subtitle entries
         String subtitleEntryPattern = "\\n(\\d+\\n\\d{2}:\\d{2}:\\d{2},\\d{3}\\s*-->\\s*\\d{2}:\\d{2}:\\d{2},\\d{3}\\n.*)";
