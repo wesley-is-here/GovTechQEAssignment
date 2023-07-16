@@ -118,7 +118,7 @@ public class BasePage {
     }
 
     // Method to load SRT File and return SRTContent
-    public String getSRTContent(String srtFile){
+    public String getSRTContent(String srtFile) throws FileNotFoundException {
         String srtContent = "";
         try {
         // Load the SRT file
@@ -145,6 +145,7 @@ public class BasePage {
     }
         catch (Exception e){
             e.printStackTrace();
+            throw new FileNotFoundException("Error reading file.");
         }
 
         return srtContent;
