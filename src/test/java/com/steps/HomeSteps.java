@@ -245,7 +245,7 @@ public class HomeSteps {
 
 
     @And("I verify SRT content with {string}")
-    public void verifySRTContent(String text) {
+    public void verifySRTContent(String text) throws IOException {
         homepage.verifyContent(text);
     }
 

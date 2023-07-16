@@ -117,82 +117,48 @@ public class BasePage {
         }
     }
 
-
-
-     // Verify if the content of an SRT file contains the expected text.
-    protected boolean verifySRTContent(String srtFilePath, String expectedText) {
+    // Method to load SRT File and return SRTContent
+    public String getSRTContent(String srtFile){
+        String srtContent = "";
         try {
-            // Load the SRT file
-            File file = new File(srtFilePath);
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+        // Load the SRT file
+        File file = new File(srtFile);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            String line;
-            // Creates a new instance of the StringBuilder class named contentBuilder.
-            //StringBuilder is a mutable sequence of characters that is used to build the content of the SRT file line by line
-            StringBuilder contentBuilder = new StringBuilder();
-            // Enters a loop that continues until there are no more lines to read from the BufferedReader
-            while ((line = reader.readLine()) != null) {
+        String line;
+        // Creates a new instance of the StringBuilder class named contentBuilder.
+        //StringBuilder is a mutable sequence of characters that is used to build the content of the SRT file line by line
+        StringBuilder contentBuilder = new StringBuilder();
+        // Enters a loop that continues until there are no more lines to read from the BufferedReader
+        while ((line = reader.readLine()) != null) {
             // appends the line to the contentBuilder
-                contentBuilder.append(line);
+            contentBuilder.append(line);
             // appends a platform-specific line separator (e.g., newline character) to the contentBuilder after each line.
-                contentBuilder.append(System.lineSeparator());
-            }
-            // close the BufferedReader after reading the lines from the SRT file to free up system resources and prevent memory leaks
-            reader.close();
-
-            // Get the content of the SRT file
-            String srtContent = contentBuilder.toString();
-
-            // Convert expectedText to same syntax
-            String expectedTextFinal = expectedText.replace("\\n", System.lineSeparator());
-
-            log.info(srtContent);
-            log.info(expectedTextFinal);
-
-            // Perform assertions or checks on the extracted content
-            return srtContent.contains(expectedTextFinal);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            contentBuilder.append(System.lineSeparator());
         }
+        // close the BufferedReader after reading the lines from the SRT file to free up system resources and prevent memory leaks
+        reader.close();
+
+        // Get the content of the SRT file
+        srtContent = contentBuilder.toString();
+
+    }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return srtContent;
     }
 
-    // PDF Checking Content Method
-    public String PDFVerify(String filePath, int pageNoStart) {
-
-        // PDFTextStripper from PDFBox Dependency
-        //read full pdf text:
-            String extractedText = "";
-            try (PDDocument document = PDDocument.load(new File(filePath))) {
-                PDFTextStripper stripper = new PDFTextStripper();
-
-                stripper.setStartPage(pageNoStart);
-                extractedText = stripper.getText(document);
-
-                // Print out Meta data of Document
-                log.info("------meta data of pdf-------");
-                System.out.println("Version Name:" + document.getVersion());
-                System.out.println("Can this PDF document be printed:" + document.getCurrentAccessPermission().canPrint());
-                System.out.println("Can this PDF document be read:" + document.getCurrentAccessPermission().isReadOnly());
-
-                System.out.println("PDF Subject:" + document.getDocumentInformation().getSubject());
-                System.out.println("PDF Title:" + document.getDocumentInformation().getTitle());
-                System.out.println("PDF Creator:" + document.getDocumentInformation().getCreator());
-                System.out.println("PDF Creation Date:" + document.getDocumentInformation().getCreationDate());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return extractedText;
-        }
 
 
 
+    // Method to check SRT content format using a string
+    public void checkSRTString(String srtFile) throws IOException {
 
+        // load SRT File
+        String srtContent = getSRTContent(srtFile);
 
-
-        // Method to check SRT content using a string
-    public void checkSRTString(String srtContent) {
         // Regular expression pattern for matching subtitle entries
         String subtitleEntryPattern = "\\n(\\d+\\n\\d{2}:\\d{2}:\\d{2},\\d{3}\\s*-->\\s*\\d{2}:\\d{2}:\\d{2},\\d{3}\\n.*)";
 
@@ -247,6 +213,61 @@ public class BasePage {
             System.out.println("Valid SRT Format, no issues!");
         }
     }
+
+
+     // Verify if the content of an SRT file contains the expected text.
+    protected boolean verifySRTContent(String srtFile, String expectedText) {
+        try{
+            // load SRT File
+            String srtContent = getSRTContent(srtFile);
+
+            // Convert expectedText to same syntax
+            String expectedTextFinal = expectedText.replace("\\n", System.lineSeparator());
+
+            log.info(srtContent);
+            log.info(expectedTextFinal);
+
+            // Perform assertions or checks on the extracted content
+            return srtContent.contains(expectedTextFinal);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // PDF Checking Content Method
+    public String PDFVerify(String filePath, int pageNoStart) {
+
+        // PDFTextStripper from PDFBox Dependency
+        //read full pdf text:
+            String extractedText = "";
+            try (PDDocument document = PDDocument.load(new File(filePath))) {
+                PDFTextStripper stripper = new PDFTextStripper();
+
+                stripper.setStartPage(pageNoStart);
+                extractedText = stripper.getText(document);
+
+                // Print out Meta data of Document
+                log.info("------meta data of pdf-------");
+                System.out.println("Version Name:" + document.getVersion());
+                System.out.println("Can this PDF document be printed:" + document.getCurrentAccessPermission().canPrint());
+                System.out.println("Can this PDF document be read:" + document.getCurrentAccessPermission().isReadOnly());
+
+                System.out.println("PDF Subject:" + document.getDocumentInformation().getSubject());
+                System.out.println("PDF Title:" + document.getDocumentInformation().getTitle());
+                System.out.println("PDF Creator:" + document.getDocumentInformation().getCreator());
+                System.out.println("PDF Creation Date:" + document.getDocumentInformation().getCreationDate());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return extractedText;
+        }
+
+
+
+
+
 
 
 

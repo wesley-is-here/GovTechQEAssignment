@@ -364,9 +364,9 @@ public class HomePage extends BasePage {
         clickIfDisplayed(btnPopUpClose,  7);
     }
 
-    public void verifyContent(String expectedText){
+    public void verifyContent(String expectedText) throws IOException {
         String SRTFilePath = "downloads/Video_3.srt";
-        checkSRTString(expectedText);
+        checkSRTString(SRTFilePath);
         boolean isContentValid = verifySRTContent(SRTFilePath, expectedText);
         if (isContentValid) {
             logger.info("SRT content contains the expected text.");
