@@ -535,14 +535,14 @@ public class BasePage {
         WebElement slider = findElement(by);
         // Check if slider element is displayed
         if (!isElementDisplayed(by)) {
-            throw new NoSuchElementException("Slider element is not displayed: " + by);
+            throw new NoSuchElementException("Slider element is not displayed.");
         }
         try {
             Actions actions = new Actions(driver);
             actions.dragAndDropBy(slider, percentage, 0).build().perform();
         }
         catch (ElementNotInteractableException e) {
-            throw new ElementNotInteractableException("Unable to move slider element: " + by);
+            throw new ElementNotInteractableException("Unable to move slider element.");
         }
     }
 
