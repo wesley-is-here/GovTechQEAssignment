@@ -91,8 +91,9 @@ public class BasePage {
         try {
             driver.manage().window().maximize();
             driver.get(url);
-            this.waitForPageToLoad();
+            waitForPageToLoad();
         } catch (TimeoutException e) {
+            driver.manage().window().maximize();
             driver.get(url);
             waitForPageToLoad();
         }
