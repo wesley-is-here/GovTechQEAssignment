@@ -255,6 +255,7 @@ public class BasePage {
                 System.out.println("Can this PDF document be printed:" + document.getCurrentAccessPermission().canPrint());
                 System.out.println("Can this PDF document be read:" + document.getCurrentAccessPermission().isReadOnly());
 
+                System.out.println("Number of Pages:" + document.getPages().getCount());
                 System.out.println("PDF Subject:" + document.getDocumentInformation().getSubject());
                 System.out.println("PDF Title:" + document.getDocumentInformation().getTitle());
                 System.out.println("PDF Creator:" + document.getDocumentInformation().getCreator());
