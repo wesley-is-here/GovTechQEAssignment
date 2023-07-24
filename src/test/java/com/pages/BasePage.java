@@ -34,14 +34,14 @@ public class BasePage {
     // Declare variables
     protected WebDriver driver;
     protected WebDriverWait wait;
-    public JavascriptExecutor js;
+    protected JavascriptExecutor js;
     Logger log = LoggerFactory.getLogger(BasePage.class);
     private WebElement webElement;
 
 
 
 
-    public BasePage(WebDriver driver, WebDriverWait wait) {
+    protected BasePage(WebDriver driver, WebDriverWait wait) {
         // this keyword - used within a class to refer to its own instance variables
         // constructor initializes the state of the BasePage object by assigning the provided driver and wait objects to the corresponding instance variables
         this.driver = driver;
@@ -76,7 +76,7 @@ public class BasePage {
     // method waits for the web element specified by the locator to become visible,
     // retrieves its visible text content, and returns it as a String.
     // If a StaleElementReferenceException occurs, the method re-locates the element and retrieves the updated text content
-    public String getText(By element) {
+    protected String getText(By element) {
         try {
             WebElement webElement = waitForVisibilityOfElement(element);
             return webElement.getText().trim();
@@ -99,11 +99,11 @@ public class BasePage {
         }
     }
 
-    public void maxWindow() {
+    protected void maxWindow() {
         driver.manage().window().maximize();
     }
 
-    public void setText(By locator, String Text) {
+    protected void setText(By locator, String Text) {
         clearText(locator);
         waitForVisibilityOfElement(locator).sendKeys(Text);
     }
@@ -120,7 +120,7 @@ public class BasePage {
     }
 
     // Method to load SRT File and return SRTContent
-    public String getSRTContent(String srtFile) throws FileNotFoundException {
+    protected String getSRTContent(String srtFile) throws FileNotFoundException {
         String srtContent = "";
         try {
         // Load the SRT file
@@ -157,7 +157,7 @@ public class BasePage {
 
 
     // Method to check SRT content format using a string
-    public void checkSRTString(String srtFile) throws IOException {
+    protected void checkSRTString(String srtFile) throws IOException {
 
         // load SRT File
         String srtContent = getSRTContent(srtFile);
@@ -239,7 +239,7 @@ public class BasePage {
     }
 
     // PDF Checking Content Method
-    public String PDFVerify(String filePath, int pageNoStart) {
+    protected String PDFVerify(String filePath, int pageNoStart) {
 
         // PDFTextStripper from PDFBox Dependency
         //read full pdf text:
@@ -276,7 +276,7 @@ public class BasePage {
 
 
 
-    public void addScreenshot(String filename) {
+    protected void addScreenshot(String filename) {
         try {
             // Capture a screenshot as a byte array using the TakesScreenshot interface
             byte[] img = (byte[]) ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
@@ -290,7 +290,7 @@ public class BasePage {
         }
     }
 
-    public void saveFile(File file, byte[] img) {
+    protected void saveFile(File file, byte[] img) {
         try {
             // Create an output stream to write the byte array to the specified file
             OutputStream os = new FileOutputStream(file);
@@ -324,7 +324,7 @@ public class BasePage {
     // If a StaleElementReferenceException occurs, the method recursively calls itself to re-locate the element (Recursion) - the element should become valid again if it reappears in the DOM
     //  StaleElementReferenceException : WebDriver tries to interact with an element that has become invalid or no longer exists in the current state of the webpage
     // In most cases, when you make another attempt to find or interact with the element, it should succeed because the webpage has settled into a new state, and the element has become valid again. The exception was triggered during the transition period when the webpage was changing.
-    public WebElement waitForVisibilityOfElement(By loc) {
+    protected WebElement waitForVisibilityOfElement(By loc) {
         try {
             webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
             highlight(webElement);
@@ -339,7 +339,7 @@ public class BasePage {
     }
 
     // waits for an element specified by the locator to become visible within the given timeout period
-    public WebElement waitForVisibilityOfElement(By loc, long timeoutInSec) {
+    protected WebElement waitForVisibilityOfElement(By loc, long timeoutInSec) {
         WebElement element;
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
@@ -357,7 +357,7 @@ public class BasePage {
 
     // method waits for multiple elements specified by the locator to become visible.
   // Once all the elements become visible, the references to the located elements are returned as a list
-    public List<WebElement> waitForVisibilityOfElements(By loc) {
+    protected List<WebElement> waitForVisibilityOfElements(By loc) {
         try {
             List<WebElement> elements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(loc));
             highlight(elements);
@@ -370,7 +370,7 @@ public class BasePage {
 
 
     // waits for an element specified by the locator to become invisible within the given timeout period
-    public void waitForInVisibilityOfElement(By loc, long timeoutInSec) {
+    protected void waitForInVisibilityOfElement(By loc, long timeoutInSec) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             boolean isInvisible = wait.until(ExpectedConditions.invisibilityOf(findElement(loc)));
@@ -382,7 +382,7 @@ public class BasePage {
 
     // presenceOfElementLocated checks if an element is present in the DOM, regardless of its visibility
     // use presence instead of visibility for uploadFile, also for clickUsingJS / JS Executor and check if video is playing, etc
-    public WebElement waitForPresenceOfElement(By loc) {
+    protected WebElement waitForPresenceOfElement(By loc) {
         WebElement element;
         try {
             element = wait.until(ExpectedConditions.presenceOfElementLocated(loc));
@@ -397,7 +397,7 @@ public class BasePage {
     }
 
 
-    public boolean isElementVisible(By loc, long timeoutInSec) {
+    protected boolean isElementVisible(By loc, long timeoutInSec) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(loc));
@@ -413,7 +413,7 @@ public class BasePage {
 
 
     // method attempts to find and return a WebElement based on the provided locator
-    public WebElement findElement(By loc) {
+    protected WebElement findElement(By loc) {
         try {
             // unlike Thread.sleep(), it does not wait for the complete duration of time.
             // In case it finds the element before the duration specified, it moves on to the next line of code execution, thereby reducing the time of script execution.
@@ -427,7 +427,7 @@ public class BasePage {
 
 
     // method is used to locate and return a list of WebElement objects based on the provided locator (By object)
-    public List<WebElement> findElements(By loc) {
+    protected List<WebElement> findElements(By loc) {
         try {
             return driver.findElements(loc);
         } catch (Exception e) {
@@ -436,7 +436,7 @@ public class BasePage {
     }
 
 
-    public void waitForFileToDownload() {
+    protected void waitForFileToDownload() {
         // Specify the download directory (By default, searches through root directory)
         File dir = new File(DEFAULT_DOWNLOAD_DIRECTORY);
         // Create an array to store the contents of the download directory
@@ -478,14 +478,14 @@ public class BasePage {
 
 
 
-    public String getAttribute(By locator, String attribute) {
+    protected String getAttribute(By locator, String attribute) {
         WebElement element = findElement(locator);
         return element.getAttribute(attribute);
     }
 
 
     // Click for element located (If not will crash)
-    public void click(By locator) {
+    protected void click(By locator) {
         try {
             waitForVisibilityOfElement(locator).click();
         }
@@ -500,7 +500,7 @@ public class BasePage {
     }
 
     // Used for Intermittent PopUp / Display of certain elements (Click - Within a specified time frame) - except won't crash (it will log - "Element not found.")
-    public void clickIfDisplayed(By locator,long timeoutInSec) {
+    protected void clickIfDisplayed(By locator,long timeoutInSec) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -585,7 +585,7 @@ public class BasePage {
     }
 
 
-    public void clickUsingJS(By loc) {
+    protected void clickUsingJS(By loc) {
         js.executeScript("arguments[0].click();", waitForPresenceOfElement(loc));
     }
 
@@ -598,7 +598,7 @@ public class BasePage {
     }
 
 
-    public void waitForPageToLoad() {
+    protected void waitForPageToLoad() {
         //  expectation is that the readyState of the document should be "complete" for the page to be considered fully loaded.
         //  This condition is commonly used to ensure that the page has finished loading before performing further interactions or assertions in Selenium tests
         // ExpectedCondition is a class that provides various conditions to wait for in order to synchronize tests with the application under test
@@ -629,7 +629,7 @@ public class BasePage {
         }
     }
 
-    public void waitFor(double waitInSec) {
+    protected void waitFor(double waitInSec) {
         try {
             if (waitInSec < 0 || waitInSec > 500) {
                 // signal to the caller of a method that the argument provided is invalid based on certain criteria or constraints
@@ -667,7 +667,7 @@ public class BasePage {
     }
 
 
-    public String getTitle(String windID) {
+    protected String getTitle(String windID) {
         driver.switchTo().window(windID);
         return driver.getTitle();
     }

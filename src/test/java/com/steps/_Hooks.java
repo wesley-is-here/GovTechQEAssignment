@@ -30,7 +30,7 @@ public class _Hooks {
     @Before
     public void openBrowser() {
         // Set the desired browser (can be "chrome" or "firefox")
-        String browser = "firefox";
+        String browser = "chrome";
 
         switch (browser.toLowerCase()) {
             case "chrome":
