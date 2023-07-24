@@ -104,6 +104,7 @@ public class BasePage {
     }
 
     public void setText(By locator, String Text) {
+        clearText(locator);
         waitForVisibilityOfElement(locator).sendKeys(Text);
     }
 
