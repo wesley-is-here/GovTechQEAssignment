@@ -598,7 +598,7 @@ public class BasePage {
     }
 
 
-    protected void waitForPageToLoad() {
+    public void waitForPageToLoad() {
         //  expectation is that the readyState of the document should be "complete" for the page to be considered fully loaded.
         //  This condition is commonly used to ensure that the page has finished loading before performing further interactions or assertions in Selenium tests
         // ExpectedCondition is a class that provides various conditions to wait for in order to synchronize tests with the application under test
