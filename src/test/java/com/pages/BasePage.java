@@ -381,7 +381,7 @@ public class BasePage {
     }
 
     // presenceOfElementLocated checks if an element is present in the DOM, regardless of its visibility
-    // use presence instead of visibility for uploadFile, also for clickUsingJS / JS Executor and check if video is playing, etc
+    // use presence instead of visibility, anything regarding javascript, eg. clickUsingJS / JS Executor and check if video is playing, etc
     protected WebElement waitForPresenceOfElement(By loc) {
         WebElement element;
         try {
@@ -396,7 +396,7 @@ public class BasePage {
         }
     }
 
-
+// element displayed within a duration
     protected boolean isElementVisible(By loc, long timeoutInSec) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
