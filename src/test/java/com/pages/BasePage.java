@@ -653,7 +653,7 @@ public class BasePage {
             driver.switchTo().window(parentWin);
             return;
         }
-        // Wait for a new window to open
+        // Wait for a new window to open (total 2 Windows)
         wait.until(ExpectedConditions.numberOfWindowsToBe(2));
         // Retrieve all window handles
         Set<String> winids = driver.getWindowHandles();
