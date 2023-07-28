@@ -672,5 +672,9 @@ public class BasePage {
         return driver.getTitle();
     }
 
+    protected void switchToIframe(By locator) {
+        driver.switchTo().frame(waitForPresenceOfElement(locator));
+    }
+
 
 }
