@@ -89,11 +89,9 @@ public class BasePage {
 
     protected void getURL(String url) {
         try {
-            driver.manage().window().maximize();
             driver.get(url);
             waitForPageToLoad();
         } catch (TimeoutException e) {
-            driver.manage().window().maximize();
             driver.get(url);
             waitForPageToLoad();
         }
