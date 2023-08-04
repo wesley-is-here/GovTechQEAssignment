@@ -722,10 +722,7 @@ public class BasePage {
         for(WebElement we:elementList){
             obtainedList.add(we.getText());
         }
-        ArrayList<String> sortedList = new ArrayList<>();
-        for(String s:obtainedList){
-            sortedList.add(s);
-        }
+        ArrayList<String> sortedList = new ArrayList<>(obtainedList);
         // Sort the list in ascending order
         Collections.sort(sortedList);
         if(sortingType.equalsIgnoreCase("asc")){
