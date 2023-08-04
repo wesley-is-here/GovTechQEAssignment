@@ -398,9 +398,9 @@ public class HomePage extends BasePage {
 
         // Check if the element is enabled
         if (isEnabled) {
-            System.out.println("Yes! Element is Enabled & Present.");
+            logger.info("Yes! Element is Enabled & Present.");
         } else {
-            System.out.println("NO! Element is not Enabled & Present.");
+            logger.info("No! Element is not Enabled & Present.");
         }
     }
 
