@@ -260,5 +260,18 @@ public class HomeSteps {
     public void checkElementButtonIsEnabled(String element) {
         homepage.checkElementEnabledAndClickable(element);
     }
+
+    @Given("user clicks on {string} sorting")
+    public void userClicksOnSortButton(String tableHeader) {
+        homepage.clickonColHeader(tableHeader);
+    }
+
+    @And("verify the {string} order for the header {string}")
+    public void verifyTheSortingOrderForTheHeader(String sortingType,String tableHeader) {
+        homepage.verifySortingOrder(sortingType,tableHeader);
+    }
+
+
+
 }
 

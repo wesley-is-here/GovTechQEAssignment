@@ -664,6 +664,27 @@ public class BasePage {
         }
     }
 
+
+    // Method to switch to a specific tab by index
+    protected void switchToTab(int tabIndex) {
+        try {
+            String originalTab = driver.getWindowHandle();
+            // Convert set to list
+            List<String> mySet = new ArrayList<>(driver.getWindowHandles());
+            driver.switchTo().window(mySet.get(tabIndex));
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexOutOfBoundsException("Invalid tab index provided.");
+        }
+    }
+
+    // Method to close the current tab and switch back to the original tab
+    protected void closeCurrentTabAndSwitchBack() {
+        String currentTab = driver.getWindowHandle();
+        driver.close();
+        driver.switchTo().window(currentTab);
+    }
+
+
     // Method to check if an element is enabled
     protected boolean isElementEnabled(By locator) {
         try {
@@ -683,6 +704,39 @@ public class BasePage {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // Method to check and verify Table is sorted both Ascending and Descending order
+    protected void verifyTableSorting(By table,String sortingType,String headerName){
+        ArrayList<String> obtainedList = new ArrayList<>();
+        ArrayList<String> headers = new ArrayList<>();
+        List<WebElement> headerList=driver.findElement(table).findElements(By.xpath(".//th"));
+
+
+        for(WebElement we:headerList){
+            headers.add(we.getText());
+        }
+
+        int pos = headers.indexOf(headerName)+1;
+        List<WebElement> elementList= findElement(table).findElements(By.xpath("./tbody/tr/td["+pos+"]"));
+        for(WebElement we:elementList){
+            obtainedList.add(we.getText());
+        }
+        ArrayList<String> sortedList = new ArrayList<>();
+        for(String s:obtainedList){
+            sortedList.add(s);
+        }
+        // Sort the list in ascending order
+        Collections.sort(sortedList);
+        if(sortingType.equalsIgnoreCase("asc")){
+            log.info("This is sorted in a ascending order.");
+        }
+        else if(sortingType.equalsIgnoreCase("desc")) {
+            // If sortingType is "desc", reverse the list to get it in descending order
+            Collections.reverse(sortedList);
+            log.info("This is sorted in an desscending order.");
+        }
+        Assert.assertEquals(sortedList,obtainedList);
     }
 
 

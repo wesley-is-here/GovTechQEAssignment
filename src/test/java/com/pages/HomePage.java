@@ -72,6 +72,8 @@ public class HomePage extends BasePage {
 
     private By btnPopUpClose = By.cssSelector("div > div > span > div.notification-title > i.vi-delete-parent.i-vi-close-big");
 
+    private By tblCustomer = By.xpath("//*[@id='table1']");
+
 
     public void launchURL(String url) {
         getURL(url);
@@ -405,6 +407,15 @@ public class HomePage extends BasePage {
         }
     }
 
+    public void clickonColHeader(String tableHeader) {
+            By loc= By.xpath("//*[@id='table1']//th[normalize-space()='"+tableHeader+"']");
+            click(loc);
+            waitFor(1);
+        }
 
+
+    public void verifySortingOrder(String sortingType,String header) {
+        verifyTableSorting(tblCustomer,sortingType,header);
+    }
 
 }
