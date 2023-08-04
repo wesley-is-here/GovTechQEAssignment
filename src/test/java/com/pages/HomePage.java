@@ -383,15 +383,27 @@ public class HomePage extends BasePage {
     }
 
 
-    public void checkElementEnabled(By locator) {
+    public void checkElementEnabled(String element) {
+        By locator;
+
+        switch (element) {
+            case "Upload":
+                locator = uploadButton;
+                break;
+            default:
+                throw new RuntimeException("Element " + element + " not found.");
+        }
+
         boolean isEnabled = isElementEnabled(locator);
+
         // Check if the element is enabled
         if (isEnabled) {
-            System.out.println("Yes! Element is Present");
+            System.out.println("Yes! Element is Enabled & Present.");
         } else {
-            System.out.println("NO! Element is not Present");
+            System.out.println("NO! Element is not Enabled & Present.");
         }
     }
+
 
 
 }

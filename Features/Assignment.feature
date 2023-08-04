@@ -14,6 +14,7 @@ Feature: QE Tech Challenge
     And I click on Yes to confirm Sign In
     Then I check video-indexer.ai media library page is loaded
     And click or wait some time for Pop-Up to diminish
+    Then I check the "Upload" element button is enabled
     When I click on Upload button
     And I upload the video file "<Video>"
     And I select Privacy drop down option to "<PrivacyType>"

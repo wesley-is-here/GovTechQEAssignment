@@ -256,5 +256,9 @@ public class HomeSteps {
     }
 
 
+    @Then("I check the {string} element button is enabled")
+    public void checkElementButtonIsEnabled(String element) {
+        homepage.checkElementEnabled(element);
+    }
 }
 
