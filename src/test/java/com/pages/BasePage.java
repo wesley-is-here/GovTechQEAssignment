@@ -664,6 +664,17 @@ public class BasePage {
         }
     }
 
+    // Method to check if an element is enabled
+    protected boolean isElementEnabled(By locator) {
+        try {
+            WebElement element = findElement(locator);
+            return element.isEnabled();
+        } catch (Exception e) {
+            // Handle any exception that occurs while finding the element
+            return false;
+        }
+    }
+
 
     protected String getTitle(String windID) {
         driver.switchTo().window(windID);

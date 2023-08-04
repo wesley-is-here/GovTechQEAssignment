@@ -381,4 +381,17 @@ public class HomePage extends BasePage {
         logger.info(PDFtext);
         Assert.assertTrue(PDFtext.contains(text));
     }
+
+
+    public void checkElementEnabled(By locator) {
+        boolean isEnabled = isElementEnabled(locator);
+        // Check if the element is enabled
+        if (isEnabled) {
+            System.out.println("Yes! Element is Present");
+        } else {
+            System.out.println("NO! Element is not Present");
+        }
+    }
+
+
 }
