@@ -383,7 +383,7 @@ public class HomePage extends BasePage {
     }
 
 
-    public void checkElementEnabled(String element) {
+    public void checkElementEnabledAndClickable(String element) {
         By locator;
 
         switch (element) {
@@ -395,12 +395,13 @@ public class HomePage extends BasePage {
         }
 
         boolean isEnabled = isElementEnabled(locator);
+        boolean isClickable = isElementClickable(locator);
 
         // Check if the element is enabled
-        if (isEnabled) {
-            logger.info("Yes! Element is Enabled & Present.");
+        if (isEnabled && isClickable) {
+            logger.info("Yes! Element is Enabled & Clickable.");
         } else {
-            logger.info("No! Element is not Enabled & Present.");
+            logger.info("No! Element is not Enabled & Clickable.");
         }
     }
 

@@ -675,6 +675,16 @@ public class BasePage {
         }
     }
 
+    // Method to check if an element is clickable
+    protected boolean isElementClickable(By locator) {
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(locator));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
     protected String getTitle(String windID) {
         driver.switchTo().window(windID);
