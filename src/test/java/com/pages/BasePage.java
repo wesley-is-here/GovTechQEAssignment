@@ -1,6 +1,8 @@
 package com.pages;
 
+import com.steps._Hooks;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.joda.time.LocalDate;
@@ -12,8 +14,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+
 
 import java.io.*;
 import java.net.URL;
@@ -35,7 +37,7 @@ public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
     protected JavascriptExecutor js;
-    Logger log = LoggerFactory.getLogger(BasePage.class);
+    Logger log = (Logger) com.steps.LoggerHelper.getLogger(BasePage.class);
     private WebElement webElement;
 
 

@@ -13,8 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.HashMap;
@@ -24,7 +23,9 @@ public class _Hooks {
 
     public static WebDriver driver;
     public static WebDriverWait wait;
-    Logger logger = LoggerFactory.getLogger(_Hooks.class);
+    // Logger logger = LoggerFactory.getLogger(_Hooks.class);
+    Logger logger = (Logger) com.steps.LoggerHelper.getLogger(_Hooks.class);
+
 
 
     @Before

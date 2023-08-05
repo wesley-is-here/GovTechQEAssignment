@@ -1,13 +1,13 @@
 package com.pages;
 
+import com.steps._Hooks;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 
 import java.io.File;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class HomePage extends BasePage {
 
-    Logger logger = LoggerFactory.getLogger(HomePage.class);
+    Logger logger = (Logger) com.steps.LoggerHelper.getLogger(HomePage.class);
 
 
     public HomePage(WebDriver driver, WebDriverWait wait) {
