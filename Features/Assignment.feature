@@ -55,6 +55,7 @@ Feature: QE Tech Challenge
     When I click on the download insight button
     Then I click to download "Insights (JSON)" completed insights
     And I switch to Tab with title "Azure AI Video Indexer Portal - Cognitive Video Indexing"
+    And I check current page title is "Azure AI Video Indexer Portal - Cognitive Video Indexing"
     When I click on the download insight button
     Then I click to download "Artifacts (ZIP)" completed insights
     When I click on the download insight button

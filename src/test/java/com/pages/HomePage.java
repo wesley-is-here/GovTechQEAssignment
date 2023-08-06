@@ -418,4 +418,12 @@ public class HomePage extends BasePage {
         verifyTableSorting(tblCustomer,sortingType,header);
     }
 
+    public void verifyPageTitle(String pageTitle) {
+        String currentTitle = getPageTitle();
+        Assert.assertEquals(currentTitle, pageTitle);
+        logger.info("Page title is correct!");
+    }
+
+
+
 }

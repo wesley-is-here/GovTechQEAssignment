@@ -272,6 +272,9 @@ public class HomeSteps {
     }
 
 
-
+    @And("I check current page title is {string}")
+    public void currentPageTitleIs(String pageTitle) {
+        homepage.verifyPageTitle(pageTitle);
+    }
 }
 
