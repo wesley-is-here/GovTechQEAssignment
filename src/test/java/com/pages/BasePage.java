@@ -739,8 +739,14 @@ public class BasePage {
     }
 
 
+    // used with switchToNewWindow() method
     protected String getTitle(String windID) {
         driver.switchTo().window(windID);
+        return driver.getTitle();
+    }
+
+    // Method to get the current page title
+    protected String getPageTitle() {
         return driver.getTitle();
     }
 
