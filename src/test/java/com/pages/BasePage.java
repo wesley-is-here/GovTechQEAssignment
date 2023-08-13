@@ -322,7 +322,7 @@ public class BasePage {
     // method waits for an element specified by the locator to become visible.
     // Once the element becomes visible, the reference to the located element is returned.
     // If a StaleElementReferenceException occurs, the method recursively calls itself to re-locate the element (Recursion) - the element should become valid again if it reappears in the DOM
-    //  StaleElementReferenceException : WebDriver tries to interact with an element that has become invalid or no longer exists in the current state of the webpage
+    //  StaleElementReferenceException : WebDriver tries to interact with an element that has become invalid or no longer exists in the current state of the webpage (Have to refresh)
     // In most cases, when you make another attempt to find or interact with the element, it should succeed because the webpage has settled into a new state, and the element has become valid again. The exception was triggered during the transition period when the webpage was changing.
     protected WebElement waitForVisibilityOfElement(By loc) {
         try {
@@ -490,7 +490,7 @@ public class BasePage {
             waitForVisibilityOfElement(locator).click();
         }
 //        ElementClickInterceptedException : WebDriver is unable to perform the click if the element is blocked (some other element is intercepting it) and we try to click we get this exception
-//        StaleElementReferenceException : WebDriver tries to interact with an element that has become invalid or no longer exists in the current state of the webpage
+//        StaleElementReferenceException : WebDriver tries to interact with an element that has become invalid or no longer exists in the current state of the webpage (at that moment), can consider refreshing browser to find again
         catch (ElementClickInterceptedException | StaleElementReferenceException e) {
             clickUsingJS(locator);
         }

@@ -151,7 +151,7 @@ public class HomeSteps {
         homepage.switchesTab(text);
     }
 
-    @And("I should see the segment {string}")
+    @And("I should see the segment with title {string}")
     public void shouldSeeTheSegment(String text) {
         homepage.seeSegment(text);
     }
@@ -261,8 +261,8 @@ public class HomeSteps {
         homepage.checkElementEnabledAndClickable(element);
     }
 
-    @Given("user clicks on {string} sorting")
-    public void userClicksOnSortButton(String tableHeader) {
+    @Given("user clicks on {string} sorting for table")
+    public void userClicksOnSortButtonTable(String tableHeader) {
         homepage.clickonColHeader(tableHeader);
     }
 

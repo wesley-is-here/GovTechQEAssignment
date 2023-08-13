@@ -42,7 +42,7 @@ Feature: QE Tech Challenge
     When I click on the video file "Video_3"
     And I check if video player is displayed
     Then I check if video is still playing if not click on play once
-    And I should see the segment "labels"
+    And I should see the segment with title "labels"
 #    And I should see the segment "audio effect (preview)"
 #    And I should see the segment "keywords"
 #    And I should see the segment "named entity"

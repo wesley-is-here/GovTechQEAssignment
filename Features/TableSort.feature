@@ -6,11 +6,11 @@ Feature: Table Sort Feature
 
   @UserStory1
   Scenario: Table Sorting
-  Given user clicks on "Last Name" sorting
+  Given user clicks on "Last Name" sorting for table
   And verify the "asc" order for the header "Last Name"
-  Then user clicks on "Last Name" sorting
+  Then user clicks on "Last Name" sorting for table
   And verify the "desc" order for the header "Last Name"
-  When user clicks on "First Name" sorting
+  When user clicks on "First Name" sorting for table
   And verify the "asc" order for the header "First Name"
-  Then user clicks on "First Name" sorting
+  Then user clicks on "First Name" sorting for table
   And verify the "desc" order for the header "First Name"
